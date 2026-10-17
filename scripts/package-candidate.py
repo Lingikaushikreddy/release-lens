@@ -6,13 +6,16 @@ root=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser();parser.add_argument('--output',required=True);parser.add_argument('--cli-artifact');args=parser.parse_args()
 out=Path(args.output).resolve();out.mkdir(parents=True,exist_ok=True)
 assert (root/'dist/web/index.html').exists(),'Run pnpm build first'
+# Retain the existing GitHub download filename while the tarball's package
+# identity follows packages/cli/package.json, including its npm scope.
+cli=out/'releaselens-0.1.0.tgz'
 if args.cli_artifact:
-    cli=out/'releaselens-0.1.0.tgz'
     provided=Path(args.cli_artifact).resolve()
     if provided!=cli:shutil.copy2(provided,cli)
 else:
     pack=subprocess.run(['npm','pack',str(root/'packages/cli'),'--ignore-scripts','--json','--pack-destination',str(out)],capture_output=True,text=True,check=True)
-    metadata=json.loads(pack.stdout)[0];cli=out/metadata['filename']
+    metadata=json.loads(pack.stdout)[0];packed=out/metadata['filename']
+    if packed!=cli:packed.replace(cli)
 # Frozen source, without dependencies, runtime scratch or generated copies.
 source=out/'source';source.mkdir(exist_ok=True)
 items=['.github','.gitignore','.npmrc','CHANGELOG.md','CONTRIBUTING.md','LICENSE','README.md','SECURITY.md','THIRD_PARTY_NOTICES.md','apps/web','docs','evidence','fixtures','package.json','packages/core/src','packages/cli/src','packages/cli/package.json','playwright.config.ts','pnpm-lock.yaml','pnpm-workspace.yaml','scripts','tests','tsconfig.json','vite.config.ts','vitest.config.ts']
@@ -41,7 +44,7 @@ ThreadingHTTPServer(("127.0.0.1",args.port),handler).serve_forever()
 ''')
 (out/'README.md').write_text('''# Release Lens 0.1.0
 
-This GitHub release bundle includes the working static browser app, self-contained Node CLI, installable npm tarball, source, fixtures and verification evidence. Public repository and checks: https://github.com/Lingikaushikreddy/release-lens. App: https://lingikaushikreddy.github.io/release-lens/. The CLI is distributed through GitHub Releases; no npm registry publication is claimed.
+This GitHub release bundle includes the working static browser app, self-contained Node CLI, installable npm tarball, source, fixtures and verification evidence. Public repository and checks: https://github.com/Lingikaushikreddy/release-lens. App: https://lingikaushikreddy.github.io/release-lens/. The CLI package is `@kaushikgojo/release-lens@0.1.0`, exposing the `releaselens` command. The tarball retains the GitHub download filename `releaselens-0.1.0.tgz`. See release verification evidence for npm registry publication and provenance status.
 
 ## Run the app
 

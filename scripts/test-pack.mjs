@@ -7,6 +7,7 @@ import { delimiter, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
+const packageManifest = JSON.parse(await readFile(join(root, 'packages/cli/package.json'), 'utf8'));
 const npm = process.platform === 'win32' ? process.execPath : 'npm';
 const npmPrefix = process.platform === 'win32' ? [join(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js')] : [];
 const temporary = await mkdtemp(join(tmpdir(), 'release lens-pack-'));
@@ -28,7 +29,8 @@ try {
   execute(process.execPath, [join(root, 'scripts/build-cli.mjs')], root);
   const packed = execute(npm, [...npmPrefix, 'pack', join(root, 'packages/cli'), '--ignore-scripts', '--json', '--pack-destination', temporary], temporary);
   const metadata = JSON.parse(packed.stdout)[0];
-  assert.equal(metadata.name, 'releaselens');
+  assert.equal(metadata.name, packageManifest.name);
+  assert.equal(metadata.version, packageManifest.version);
   const required = [
     'package.json', 'dist/main.js', 'README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md',
     'SECURITY.md', 'CONTRIBUTING.md', 'docs/measurement-contract.md',
@@ -46,8 +48,10 @@ try {
   await writeFile(join(consumer, 'package.json'), '{"name":"release-lens-clean-consumer","version":"1.0.0","private":true}\n');
   execute(npm, [...npmPrefix, 'install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', packedPath], consumer);
 
-  const installed = join(consumer, 'node_modules/releaselens');
+  const installed = join(consumer, 'node_modules', ...metadata.name.split('/'));
   const manifest = JSON.parse(await readFile(join(installed, 'package.json'), 'utf8'));
+  assert.equal(manifest.name, metadata.name);
+  assert.equal(manifest.version, metadata.version);
   assert.equal(manifest.engines.node, '>=22');
   assert.equal(manifest.bin.releaselens, 'dist/main.js');
   assert.equal(manifest.scripts, undefined, 'Shipped package must not need lifecycle scripts');
@@ -125,6 +129,7 @@ try {
     node: process.version,
     installedRuntime,
     platform: process.platform,
+    package: `${metadata.name}@${metadata.version}`,
     artifact: metadata.filename,
     sha256: createHash('sha256').update(await readFile(packedPath)).digest('hex'),
     installedWithScriptsDisabled: true,

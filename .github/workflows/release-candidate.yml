@@ -36,7 +36,7 @@ jobs:
           cp -R evidence candidate/evidence
           cp README.md LICENSE THIRD_PARTY_NOTICES.md docs/measurement-contract.md candidate/
           cd candidate
-          sha256sum releaselens-*.tgz > SHA256SUMS
+          sha256sum ./*.tgz > SHA256SUMS
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-lens-candidate-${{ github.sha }}

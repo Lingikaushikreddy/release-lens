@@ -1,6 +1,6 @@
 {
   "pythonVersion": "3.14.7",
-  "nodeVersion": "v24.22.0",
+  "nodeVersion": "v24.5.0",
   "results": [
     {
       "pair": "synthetic growth",
@@ -15,7 +15,7 @@
         "fixtures/after.tgz": "5595426aaa4a8e53507dfdae48dfa996ad26b5df25a9e6466f8d9334f5462889"
       },
       "repeatOutputIdentical": true,
-      "elapsedSeconds": 0.6512
+      "elapsedSeconds": 0.7589
     },
     {
       "pair": "synthetic cleanup",
@@ -30,7 +30,7 @@
         "fixtures/clean.tgz": "4c7159e9f5a7476b08ca3a7c1eb9be44620a4e6decea3dfc7bad801839fa59e1"
       },
       "repeatOutputIdentical": true,
-      "elapsedSeconds": 0.6859
+      "elapsedSeconds": 0.9354
     },
     {
       "pair": "inert hostile text",
@@ -45,7 +45,7 @@
         "fixtures/hostile/markup.tgz": "6d406773020c7548bbebbaa296c4a81677953aadf7ba7bbebedbeb8eae3fa3dd"
       },
       "repeatOutputIdentical": true,
-      "elapsedSeconds": 0.0934
+      "elapsedSeconds": 0.1346
     },
     {
       "pair": "real is-number 6 -> 7",
@@ -60,7 +60,7 @@
         "fixtures/real/is-number-7.0.0.tgz": "7b75c1057198cf97696909a9bee176c9c5e9bcb5b03bf3ecef2f484defadd51e"
       },
       "repeatOutputIdentical": true,
-      "elapsedSeconds": 0.1083
+      "elapsedSeconds": 0.1144
     }
   ],
   "limitations": "Valid supported subset only; not a malformed-input acceptance oracle or proof of package compatibility."

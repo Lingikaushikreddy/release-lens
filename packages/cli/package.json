@@ -1,9 +1,30 @@
 {
-  "name": "releaselens",
+  "name": "@kaushikgojo/release-lens",
   "version": "0.1.0",
   "description": "Compare exact npm tarball contents offline without installing packages.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lingikaushikreddy/release-lens.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://lingikaushikreddy.github.io/release-lens/",
+  "bugs": {
+    "url": "https://github.com/Lingikaushikreddy/release-lens/issues"
+  },
+  "keywords": [
+    "npm",
+    "tarball",
+    "package-diff",
+    "release-review",
+    "cli",
+    "offline"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "bin": {
     "releaselens": "dist/main.js"
   },

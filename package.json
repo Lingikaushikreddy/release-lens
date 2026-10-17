@@ -16,7 +16,8 @@
     "build": "pnpm build:cli && vite build",
     "fixtures": "python3 scripts/make-fixtures.py",
     "test:oracle": "python3 scripts/verify-oracle.py",
-    "test:pack": "node scripts/test-pack.mjs"
+    "test:pack": "node scripts/test-pack.mjs",
+    "test:registry": "node scripts/test-registry.mjs"
   },
   "dependencies": {
     "modern-tar": "0.8.6",
