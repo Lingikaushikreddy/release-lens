@@ -115,7 +115,11 @@ try {
   assert.equal(npxManifest.version, version);
   assert.deepEqual(npxManifest.bin, metadata.bin);
   const npxPackage = JSON.parse(await readFile(join(npxInstall, 'package.json'), 'utf8'));
-  assert.deepEqual(npxPackage._npx.packages, [specification]);
+  assert.deepEqual(Object.keys(npxPackage.dependencies ?? {}), [packageName]);
+  assert([version, `^${version}`].includes(npxPackage.dependencies[packageName]));
+  // npm 10 saves the dependency without npm 11's private _npx metadata.
+  // The installed manifest and lock below still prove exact registry identity.
+  if (npxPackage._npx !== undefined) assert.deepEqual(npxPackage._npx.packages, [specification]);
   const npxLock = JSON.parse(await readFile(join(npxInstall, 'package-lock.json'), 'utf8'));
   const npxLocked = npxLock.packages[`node_modules/${packageName}`];
   assert.equal(npxLocked.version, version);
