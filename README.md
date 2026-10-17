@@ -2,7 +2,7 @@
 
 Review exactly what changed between two npm tarballs, without installing or running either package.
 
-[Try the public app](https://lingikaushikreddy.github.io/release-lens/) · [npm package](https://www.npmjs.com/package/@kaushikgojo/release-lens) · [GitHub release](https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.0) · [Hosted CI results](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38985298412)
+[Try the public app](https://lingikaushikreddy.github.io/release-lens/) · [npm package](https://www.npmjs.com/package/@kaushikgojo/release-lens) · [GitHub release](https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.0) · [Registry verification](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040)
 
 **0.1.0** includes a browser review app and a Node CLI built on the same bounded streaming analysis core. Compare two `.tgz` files, trace payload growth to individual files, inspect manifest changes and missing literal targets, and export a deterministic JSON report.
 
@@ -26,6 +26,8 @@ Requires Node 22.13+ or Node 24. Run the versioned scoped package directly:
 npx --yes @kaushikgojo/release-lens@0.1.0 diff before.tgz after.tgz --format json
 ```
 
+Real registry npx and clean npm installation passed on **Windows, Linux and macOS**, with **Node 22.23.3 / npm 10.9.9** and **Node 24.21.0 / npm 11.19.0**: [all six hosted jobs passed](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040). See [the release report and per-run receipts](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md).
+
 Or install this release globally:
 
 ```sh
@@ -48,7 +50,8 @@ releaselens diff before.tgz after.tgz --format json \
 
 | Evidence | What it records |
 | --- | --- |
-| [npm release verification](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md) | Registry identity and clean npx/installation evidence for `@kaushikgojo/release-lens@0.1.0`. |
+| [Cross-platform registry run 38988622040](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040) | Six successful real npx and clean npm installation cases: Node 22/24 on Windows, Linux and macOS, using anonymous registry access and fresh caches. |
+| [npm release verification](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md) | Published artifact identity, the six-case hosted registry matrix, and downloadable verification reports for `@kaushikgojo/release-lens@0.1.0`. |
 | [Hosted CI run 38985298412](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38985298412) | Successful verification of the original GitHub release commit `ff246497`: Node 22/24 on Linux, macOS and Windows, browser checks, and deployment checks. |
 | [0.1.0 verification bundle](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.0/release-lens-0.1.0-verification.zip) | Downloadable hosted verification evidence for the original GitHub release. [SHA256SUMS](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.0/SHA256SUMS) and [release.json](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.0/release.json) identify release assets. |
 | [Independent oracle report](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/oracle.json) | Four supported artifact pairs checked with CPython `tarfile` and `hashlib`: synthetic growth, cleanup, inert hostile text, and real `is-number` 6.0.0 → 7.0.0 tarballs. |
