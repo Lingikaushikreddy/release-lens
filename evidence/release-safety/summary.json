@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "fullRerun": {
+    "runId": 38990498134,
+    "attempt": 2,
+    "conclusion": "success",
+    "successfulJobs": 9,
+    "freshRegistryJobs": 6,
+    "publishStep": "skipped",
+    "originalEightAssetsUnchanged": true,
+    "releaseBodyAndTimestampsUnchanged": true
+  },
+  "failedJobRecovery": {
+    "runId": 38991624156,
+    "firstAttempt": "expected failure: deliberately corrupted local expectation",
+    "secondAttempt": "success",
+    "reusedReviewedArtifactId": 12085556667,
+    "artifactCreatedAt": "2026-10-17T01:37:11Z",
+    "sha256": "1caf85d79f2c3f6528e5563a962d0fac30686b7ec7ad3001f19283704f63f5e8",
+    "anonymousRegistryAccess": true
+  },
+  "localVerification": {
+    "releaseChecksPerRuntime": 60,
+    "injectedSafetyTests": 35,
+    "injectedSubprocessCasesPerRuntime": 40,
+    "expectedRejectedCases": 33,
+    "successfulCases": 7,
+    "nodeVersions": [
+      "22.23.3",
+      "24.22.0"
+    ],
+    "coreTests": 89,
+    "browserCases": 33,
+    "browserEngines": [
+      "Chromium",
+      "Firefox",
+      "WebKit"
+    ]
+  },
+  "evidenceBoundary": "Injected tests simulate external boundaries. Actual GitHub workflows independently establish skip and recovery behavior. UI public deployment is recorded separately."
+}

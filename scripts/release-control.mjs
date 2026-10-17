@@ -112,13 +112,18 @@ async function candidate() {
   await save(join(directory, 'release-control.json'), { ...gate, artifact, sha256: sha256(bytes), bytes: bytes.length, workflowRun: `https://github.com/${repository}/actions/runs/${process.env.GITHUB_RUN_ID}` });
 }
 
-async function loadCandidate() {
-  const c = await json(join(root, 'work/candidate/release-control.json'));
-  assert.equal(c.package, packageName); assert.match(c.artifact, /^releaselens-\d+\.\d+\.\d+\.tgz$/u);
-  assert.equal(c.sourceCommit, process.env.GITHUB_SHA); assert.equal(`refs/tags/${c.tag}`, process.env.GITHUB_REF);
-  const bytes = await readFile(join(root, 'work/candidate', c.artifact));
-  assert.equal(sha256(bytes), c.sha256); assert.equal(bytes.length, c.bytes);
-  assert.equal(c.dryRun, false);
+export async function loadCandidate(directory = join(root, 'work/candidate'), filename = 'release-control.json') {
+  const c = await json(join(directory, filename));
+  assert.equal(c.package, packageName);
+  assert.equal(process.env.GITHUB_EVENT_NAME, 'push', 'Only a tag push may publish or finalize a release');
+  const release = validateRelease({ ref: process.env.GITHUB_REF, event: 'push', rootVersion: c.version, packageVersion: c.version, repository: process.env.GITHUB_REPOSITORY });
+  assert.equal(c.tag, release.tag, 'Candidate tag must match its version');
+  assert.equal(c.artifact, `releaselens-${c.version}.tgz`, 'Candidate archive must match its version');
+  assert.equal(c.sourceCommit, process.env.GITHUB_SHA, 'Candidate source must match the workflow commit');
+  assert.equal(c.dryRun, false, 'A dry run cannot publish or finalize a release');
+  const bytes = await readFile(join(directory, c.artifact));
+  assert.equal(sha256(bytes), c.sha256, 'Candidate archive checksum must match the reviewed bytes');
+  assert.equal(bytes.length, c.bytes, 'Candidate archive size must match the reviewed bytes');
   return c;
 }
 

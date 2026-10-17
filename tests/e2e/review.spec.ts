@@ -16,7 +16,7 @@ async function compare(page: Page) {
 
 test('local files produce a useful review, searchable evidence, and canonical JSON', async ({ page }) => {
   await page.goto(basePath);
-  await expect(page.getByRole('heading', { name: 'Review what your package ships.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /A closer look/ })).toBeVisible();
   await choosePair(page);
   await page.getByLabel('Growth budget in bytes').fill('0');
   await compare(page);
@@ -26,7 +26,7 @@ test('local files produce a useful review, searchable evidence, and canonical JS
   await page.getByLabel('Search file paths').fill('fixtures');
   await expect(page.locator('tbody tr').first()).toContainText('fixtures');
   await page.getByLabel('Search file paths').fill('no-such-path-9bf');
-  await expect(page.getByText('No files match this search.')).toBeVisible();
+  await expect(page.getByText('No paths match these filters.')).toBeVisible();
   await page.getByLabel('Search file paths').fill('');
   const downloadEvent = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download JSON' }).click();
@@ -117,7 +117,7 @@ test('examples demonstrate a finding and its corrected follow-up', async ({ page
     if (request.url().endsWith('.tgz')) requests.push(new URL(request.url()).pathname);
   });
   await page.goto(basePath);
-  await page.getByRole('button', { name: 'Compare example releases' }).click();
+  await page.getByRole('button', { name: 'Explore an example', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Review summary' })).toBeVisible();
   await expect(page.locator('.findings-list')).toContainText('dist/missing.js');
   await page.getByRole('button', { name: 'Compare clean follow-up' }).click();
@@ -144,7 +144,7 @@ test('keyboard controls and narrow layout remain usable', async ({ page }) => {
   await page.keyboard.press('Enter');
   await choosePair(page, 'clean');
   await compare(page);
-  await page.getByLabel('Changed only').uncheck();
+  await page.getByRole('button', { name: /^Unchanged \(/ }).click();
   await page.getByLabel('Search file paths').focus();
   await page.keyboard.type('dist/');
   await expect(page.locator('tbody')).toContainText('dist/');
@@ -152,4 +152,63 @@ test('keyboard controls and narrow layout remain usable', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Download JSON' })).toBeInViewport();
   const fits = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
   expect(fits).toBe(true);
+});
+
+test('swapping archives clears the old review and reverses the measured change', async ({ page }) => {
+  await page.goto(basePath);
+  await expect(page.getByRole('button', { name: 'Swap archives' })).toBeDisabled();
+  await choosePair(page);
+  await compare(page);
+  await expect(page.locator('.primary-measurement .exact-value')).toHaveText('+18,874,372 B');
+  await page.getByRole('button', { name: 'Swap archives' }).click();
+  await expect(page.getByRole('heading', { name: 'Review summary' })).toHaveCount(0);
+  await compare(page);
+  await expect(page.locator('.primary-measurement .exact-value')).toHaveText('−18,874,372 B');
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download JSON' }).click();
+  const downloaded = JSON.parse(await readFile((await (await downloadEvent).path())!, 'utf8'));
+  expect(downloaded.before.unpackedBytes).toBe(18_875_059);
+  expect(downloaded.after.unpackedBytes).toBe(687);
+});
+
+test('budget presets set exact bytes and invalidate an earlier report', async ({ page }) => {
+  await page.goto(basePath);
+  await choosePair(page);
+  const presets = page.getByRole('group', { name: 'Budget presets' });
+  await presets.getByRole('button', { name: '1 MiB', exact: true }).click();
+  await expect(page.getByLabel('Growth budget in bytes')).toHaveValue('1048576');
+  await compare(page);
+  await expect(page.getByText('Budget exceeded', { exact: true })).toBeVisible();
+  await presets.getByRole('button', { name: 'None', exact: true }).click();
+  await expect(page.getByLabel('Growth budget in bytes')).toHaveValue('');
+  await expect(page.getByRole('heading', { name: 'Review summary' })).toHaveCount(0);
+  await compare(page);
+  await expect(page.getByText('No budget set', { exact: true })).toBeVisible();
+});
+
+test('category and change filters compose and can be cleared', async ({ page }) => {
+  await page.goto(basePath);
+  await choosePair(page);
+  await compare(page);
+  const category = page.getByRole('button', { name: 'Filter files by tests and fixtures', exact: true });
+  await expect(category).toHaveAccessibleDescription('2 paths +18.00 MiB');
+  await category.click();
+  await expect(category).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('tbody tr')).toHaveCount(2);
+  await expect(page.locator('tbody')).toContainText('fixtures/training-a.bin');
+  await page.getByRole('button', { name: /^Removed \(/ }).click();
+  await expect(page.locator('tbody tr')).toHaveCount(0);
+  await expect(page.getByText('No paths match these filters.')).toBeVisible();
+  await page.getByRole('button', { name: /^Added \(/ }).click();
+  await expect(page.locator('tbody tr')).toHaveCount(2);
+  await page.getByRole('button', { name: 'Clear category filter' }).click();
+  await expect(category).toHaveAttribute('aria-pressed', 'false');
+  await page.getByRole('button', { name: /^Unchanged \(/ }).click();
+  await page.getByLabel('Search file paths').fill('dist/');
+  await expect(page.locator('tbody')).toContainText('dist/');
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download JSON' }).click();
+  const report = JSON.parse(await readFile((await (await downloadEvent).path())!, 'utf8'));
+  expect(report.unpackedDelta).toBe(18_874_372);
+  expect(report.fileDeltas.some((file: { path: string }) => file.path === 'fixtures/training-a.bin')).toBe(true);
 });

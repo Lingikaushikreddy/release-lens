@@ -1,0 +1,31 @@
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	﻿2026-10-17T01:37:20.9525161Z ##[group]Run node scripts/test-registry.mjs
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9525861Z [36;1mnode scripts/test-registry.mjs[0m
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9593098Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9593512Z env:
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9593797Z   RELEASE_LENS_REGISTRY_PACKAGE: @kaushikgojo/release-lens
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9594208Z   RELEASE_LENS_REGISTRY_VERSION: 0.1.1
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9594643Z   RELEASE_LENS_REGISTRY_ARTIFACT: work/recovery/releaselens-0.1.1.tgz
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9595138Z   RELEASE_LENS_REGISTRY_REPORT: work/recovery/registry-recovery.json
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:20.9595513Z ##[endgroup]
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4951289Z node:internal/modules/run_main:107
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4952548Z     triggerUncaughtException(
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4956412Z     ^
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4956689Z 
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4957639Z AssertionError [ERR_ASSERTION]: Registry bytes must match the exact reviewed publish artifact
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4959701Z + actual - expected
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4960023Z 
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4960702Z + '1caf85d79f2c3f6528e5563a962d0fac30686b7ec7ad3001f19283704f63f5e8'
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4962199Z - 'aeeaebca3615e1631ab5707259916e1d4768e93a39e40a6fcd89234e4498b900'
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4963193Z 
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4963877Z     at file:///home/runner/work/release-lens/release-lens/scripts/test-registry.mjs:91:10
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4965259Z     at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4966262Z   generatedMessage: false,
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4966780Z   code: 'ERR_ASSERTION',
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4967661Z   actual: '1caf85d79f2c3f6528e5563a962d0fac30686b7ec7ad3001f19283704f63f5e8',
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4968880Z   expected: 'aeeaebca3615e1631ab5707259916e1d4768e93a39e40a6fcd89234e4498b900',
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4969756Z   operator: 'strictEqual',
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4970253Z   diff: 'simple'
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4970617Z }
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4970824Z 
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.4971007Z Node.js v24.21.0
+Reject mismatched bytes or verify the recovered archive	Run the real anonymous registry verification	2026-10-17T01:37:21.5404281Z ##[error]Process completed with exit code 1.

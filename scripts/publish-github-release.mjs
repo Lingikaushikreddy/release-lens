@@ -3,11 +3,10 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { loadCandidate } from './release-control.mjs';
 
 const directory = 'work/candidate';
-const c = JSON.parse(await readFile(join(directory, 'release-verification.json'), 'utf8'));
-assert.equal(c.sourceCommit, process.env.GITHUB_SHA);
-assert.equal(`refs/tags/${c.tag}`, process.env.GITHUB_REF);
+const c = await loadCandidate(directory, 'release-verification.json');
 const repository = 'Lingikaushikreddy/release-lens';
 assert.equal(process.env.GITHUB_REPOSITORY, repository);
 const evidenceArchive = `release-lens-${c.version}-verification.zip`;

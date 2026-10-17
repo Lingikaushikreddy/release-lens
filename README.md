@@ -8,15 +8,17 @@ Review exactly what changed between two npm tarballs, without installing or runn
 
 ## See a release review
 
-Open [the public app](https://lingikaushikreddy.github.io/release-lens/) and choose **Compare example releases**. The synthetic example adds two fixture files totaling **18 MiB**, plus 4 manifest bytes: **+18,874,372 B** of unpacked payload. The report also shows `/bin/demo` changing to `dist/missing.js`, which is absent from the after archive. Expand a file row to inspect its exact size and SHA-256 evidence.
+Open [the public app](https://lingikaushikreddy.github.io/release-lens/) and choose **Explore an example**, or drop your own before and after `.tgz` files into the workbench. Swap the archives to reverse the comparison, and choose a 1 MiB or 10 MiB growth budget with one click.
 
-![Release Lens review showing 18 MiB of added fixtures, exact file sizes and SHA-256 evidence, and the missing bin target](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/review-evidence.png)
+![Release Lens bright workbench with an interactive archive comparison and example shortcut](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/workbench-home.jpg)
+
+The synthetic example adds two fixture files totaling **18 MiB**, plus 4 manifest bytes: **+18,874,372 B** of unpacked payload. Its `/bin/demo` changes to `dist/missing.js`, which is absent from the after archive. Select a category to drill into its files, combine change filters with path search, sort by growth or size, and expand a row for exact bytes and SHA-256 evidence. Filters change the view; exported JSON retains the complete report.
+
+![Interactive evidence review showing selected fixture files, change filters, exact byte deltas and SHA-256 hashes](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/workbench-evidence.jpg)
 
 Choose **Compare clean follow-up** to compare the problematic release with its correction. It removes the fixture files, restores the literal bin target, and reports **−18,874,372 B** with **0 missing local targets in the after archive**. Wildcard targets remain explicitly unchecked.
 
-![Clean follow-up showing an 18 MiB reduction and zero missing local targets in the after archive](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/clean-followup.png)
-
-Screenshots are from the public app using bundled synthetic fixtures. Analysis runs in a worker on your device; local tarballs stay in your browser. Package scripts are displayed as inert text and are never run.
+See the [clean follow-up](docs/images/workbench-clean.jpg), [review overview](docs/images/workbench-review.jpg), and [mobile workbench](docs/images/workbench-mobile.jpg). Screenshots show the production build using bundled synthetic fixtures. Analysis runs in a worker on your device; local tarballs stay in your browser. Package scripts are displayed as inert text and are never run.
 
 ## CLI quickstart
 
@@ -26,7 +28,7 @@ Requires Node 22.13+ or Node 24. Run the versioned scoped package directly:
 npx --yes @kaushikgojo/release-lens@0.1.1 diff before.tgz after.tgz --format json
 ```
 
-For **0.1.0**, real registry npx and clean npm installation passed on **Windows, Linux and macOS**, with **Node 22.23.3 / npm 10.9.9** and **Node 24.21.0 / npm 11.19.0**: [all six hosted jobs passed](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040). See [the release report and per-run receipts](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md).
+For **0.1.1**, real registry npx and clean npm installation passed on **Windows, Linux and macOS with Node 22/24**, including a [complete release rerun](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38990498134/attempts/2). That rerun skipped npm publication after matching the existing archive's exact bytes. Historical **0.1.0** installation results remain in [the npm release report](evidence/NPM_RELEASE.md).
 
 Or install this release globally:
 
@@ -50,8 +52,13 @@ releaselens diff before.tgz after.tgz --format json \
 
 Releases are automated through [GitHub Actions](https://github.com/Lingikaushikreddy/release-lens/blob/main/.github/workflows/release.yml): matching version tags require the exact commit's full CI matrix, publish the tested tarball through npm trusted publishing, and run fresh npx/npm installs on Windows, Linux and macOS with Node 22/24. GitHub releases are finalized after all six cases and source-bound provenance verification pass. See [the release runbook](https://github.com/Lingikaushikreddy/release-lens/blob/main/docs/releasing.md) for tags, manual candidate rehearsals and failure recovery.
 
+Failure and rerun paths are exercised too: the full **0.1.1** rerun passed all nine jobs without republishing or changing the eight original release assets. A separate read-only rehearsal deliberately failed the real archive-integrity check, then passed a failed-job rerun using the preserved reviewed artifact. [The safety report](evidence/RELEASE_SAFETY.md) includes raw records and the limits of the injected tests.
+
 | Evidence | What it records |
 | --- | --- |
+| [Release safety report](evidence/RELEASE_SAFETY.md) | Live existing-version skip, expected integrity failure and successful recovery, plus 60 local release checks on each supported Node version. |
+| [0.1.1 release rerun, attempt 2](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38990498134/attempts/2) | All nine jobs passed; npm publish skipped; all six fresh Windows/Linux/macOS Node 22/24 registry cases passed again. |
+| [Failure and recovery rehearsal](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38991624156) | Attempt 1 rejected a deliberately corrupted local expectation; attempt 2 reused the original artifact and passed real anonymous npx/npm installation. |
 | [Cross-platform registry run 38988622040](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040) | Six successful real npx and clean npm installation cases: Node 22/24 on Windows, Linux and macOS, using anonymous registry access and fresh caches. |
 | [npm release verification](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md) | Published artifact identity, the six-case hosted registry matrix, and downloadable verification reports for `@kaushikgojo/release-lens@0.1.0`. |
 | [Hosted CI run 38985298412](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38985298412) | Successful verification of the original GitHub release commit `ff246497`: Node 22/24 on Linux, macOS and Windows, browser checks, and deployment checks. |
@@ -104,6 +111,7 @@ Run the verification suite:
 ```sh
 pnpm check
 pnpm test
+pnpm test:release
 pnpm build
 pnpm test:oracle
 pnpm test:pack

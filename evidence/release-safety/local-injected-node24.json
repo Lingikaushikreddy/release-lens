@@ -1,0 +1,515 @@
+{
+  "kind": "isolated-release-entry-point-fault-injection",
+  "createdAt": "2026-10-17T01:47:20.315Z",
+  "node": "v24.22.0",
+  "platform": "darwin",
+  "noPublishingCredentials": true,
+  "noExternalNetwork": true,
+  "sourceFiles": {
+    "release-control.mjs": "0ee8e75b5ec8569670242dfa079884c8179566ecd0e95190a9c0190197443f8c",
+    "publish-github-release.mjs": "2ca6a0b7a71ee3201853c10ddea8ad695a82bd89ff888f3e3ec4be4db0b018e3",
+    "release-safety.test.mjs": "437a8c46b33ad041e9746f17209707fdc3a774736d54ca203685f3fa6d745d13"
+  },
+  "scenarios": [
+    {
+      "scenario": "GitHub publisher rejects dry-run candidate",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: A dry run cannot publish or finalize a release\n\ntrue !== false\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-1gYijg/scripts/release-control.mjs:123:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-1gYijg/scripts/publish-github-release.mjs:9:11 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: true,\n  expected: false,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Publication rejects version/tag mismatch",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Tag must exactly match both package versions\n+ actual - expected\n\n+ 'refs/tags/v0.1.1'\n- 'refs/tags/v0.1.2'\n                  ^\n\n    at validateRelease (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-qvChxQ/scripts/release-control.mjs:28:10)\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-qvChxQ/scripts/release-control.mjs:119:19)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-qvChxQ/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-qvChxQ/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'refs/tags/v0.1.1',\n  expected: 'refs/tags/v0.1.2',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "GitHub publisher rejects corrupt candidate",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Candidate archive checksum must match the reviewed bytes\n+ actual - expected\n\n+ '7fd5491c459e648495e3e1c56cb051d5af21ba4f18caef7243913474fe1411d8'\n- '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-FQpysY/scripts/release-control.mjs:125:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-FQpysY/scripts/publish-github-release.mjs:9:11 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: '7fd5491c459e648495e3e1c56cb051d5af21ba4f18caef7243913474fe1411d8',\n  expected: '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Identical npm version / attempt 1",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "exists=true",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1",
+        "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz"
+      ],
+      "mutationCommands": [],
+      "stderr": "",
+      "stdout": "Existing version has identical bytes; resuming verification without republishing"
+    },
+    {
+      "scenario": "Identical npm version / attempt 2",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "exists=true\nexists=true",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1",
+        "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz",
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1",
+        "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz"
+      ],
+      "mutationCommands": [],
+      "stderr": "",
+      "stdout": "Existing version has identical bytes; resuming verification without republishing"
+    },
+    {
+      "scenario": "Unpublished npm version returns first-publication flag",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "exists=false",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "",
+      "stdout": "Version is available for first publication"
+    },
+    {
+      "scenario": "Different published archive fails closed",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1",
+        "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Existing version differs: never overwrite or automatically unpublish\n+ actual - expected\n\n+ 'aeb958dbf6e38ce66f94c9b5ae21466f224e70191a48a5ed5f26032d2f9bca9a'\n- '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b'\n\n    at Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-SRBdT0/scripts/release-control.mjs:138:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-SRBdT0/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'aeb958dbf6e38ce66f94c9b5ae21466f224e70191a48a5ed5f26032d2f9bca9a',\n  expected: '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Registry metadata failure does not authorize publishing",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Registry preflight must succeed or report an unpublished version\n\n503 !== 200\n\n    at Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-SjJATw/scripts/release-control.mjs:134:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-SjJATw/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 503,\n  expected: 200,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Registry archive failure does not authorize publishing",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1",
+        "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n500 !== 200\n\n    at Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-TI4WMm/scripts/release-control.mjs:137:85)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-TI4WMm/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 500,\n  expected: 200,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong registry package identity fails closed",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '@someone/else'\n- '@kaushikgojo/release-lens'\n\n    at Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-RmEg2O/scripts/release-control.mjs:135:50)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-RmEg2O/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '@someone/else',\n  expected: '@kaushikgojo/release-lens',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "External archive origin fails before download",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'https://attacker.example'\n- 'https://registry.npmjs.org'\n           ^\n\n    at Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-K7kBsQ/scripts/release-control.mjs:136:54)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-K7kBsQ/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 'https://attacker.example',\n  expected: 'https://registry.npmjs.org',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Dry-run candidate never reaches npm registry",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: A dry run cannot publish or finalize a release\n\ntrue !== false\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-5LeJG2/scripts/release-control.mjs:123:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-5LeJG2/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-5LeJG2/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: true,\n  expected: false,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong candidate source never reaches npm registry",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Candidate source must match the workflow commit\n+ actual - expected\n\n+ 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'\n- 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-sJua1Q/scripts/release-control.mjs:122:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-sJua1Q/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-sJua1Q/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',\n  expected: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong candidate archive identity never reaches npm registry",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Candidate archive must match its version\n+ actual - expected\n\n+ 'releaselens-0.1.2.tgz'\n- 'releaselens-0.1.1.tgz'\n                   ^\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-gra9Ag/scripts/release-control.mjs:121:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-gra9Ag/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-gra9Ag/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'releaselens-0.1.2.tgz',\n  expected: 'releaselens-0.1.1.tgz',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong candidate tag never reaches npm registry",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Candidate tag must match its version\n\n'v0.1.2' !== 'v0.1.1'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-A0loBT/scripts/release-control.mjs:120:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-A0loBT/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-A0loBT/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'v0.1.2',\n  expected: 'v0.1.1',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong candidate package never reaches npm registry",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '@someone/else'\n- '@kaushikgojo/release-lens'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-icqYhP/scripts/release-control.mjs:117:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-icqYhP/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-icqYhP/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '@someone/else',\n  expected: '@kaushikgojo/release-lens',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Corrupt local candidate fails before npm lookup",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Candidate archive checksum must match the reviewed bytes\n+ actual - expected\n\n+ '7fd5491c459e648495e3e1c56cb051d5af21ba4f18caef7243913474fe1411d8'\n- '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-znVaU7/scripts/release-control.mjs:125:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-znVaU7/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-znVaU7/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: '7fd5491c459e648495e3e1c56cb051d5af21ba4f18caef7243913474fe1411d8',\n  expected: '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Missing registry case blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Six registry receipts required\n\n5 !== 6\n\n    at validateReceipts (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-cY3RZ2/scripts/release-control.mjs:41:10)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-cY3RZ2/scripts/release-control.mjs:163:3)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-cY3RZ2/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 5,\n  expected: 6,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Duplicate OS/Node case blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: All six distinct OS/Node combinations required\n\n5 !== 6\n\n    at validateReceipts (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-3M3IOI/scripts/release-control.mjs:56:10)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-3M3IOI/scripts/release-control.mjs:163:3)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-3M3IOI/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 5,\n  expected: 6,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong registry bytes block finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '0000000000000000000000000000000000000000000000000000000000000000'\n- '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b'\n\n    at validateReceipts (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-eFPMaM/scripts/release-control.mjs:45:12)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-eFPMaM/scripts/release-control.mjs:163:3)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-eFPMaM/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '0000000000000000000000000000000000000000000000000000000000000000',\n  expected: '055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Failed npx budget behavior blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: npxExceededBudgetExit\n\n0 !== 1\n\n    at validateReceipts (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-JZHzp3/scripts/release-control.mjs:54:314)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-JZHzp3/scripts/release-control.mjs:163:3)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-JZHzp3/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 0,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Authenticated registry configuration blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: anonymousNpmConfiguration\n\nfalse !== true\n\n    at validateReceipts (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-ozJ9VG/scripts/release-control.mjs:51:179)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-ozJ9VG/scripts/release-control.mjs:163:3)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-ozJ9VG/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong provenance workflow blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   path: '.github/workflows/other.yml',\n-   path: '.github/workflows/release.yml',\n    ref: 'refs/tags/v0.1.1',\n    repository: 'https://github.com/Lingikaushikreddy/release-lens'\n  }\n\n    at validateProvenance (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-nLidZd/scripts/release-control.mjs:70:10)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-nLidZd/scripts/release-control.mjs:163:34)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-nLidZd/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: {\n    repository: 'https://github.com/Lingikaushikreddy/release-lens',\n    path: '.github/workflows/other.yml',\n    ref: 'refs/tags/v0.1.1'\n  },\n  expected: {\n    ref: 'refs/tags/v0.1.1',\n    repository: 'https://github.com/Lingikaushikreddy/release-lens',\n    path: '.github/workflows/release.yml'\n  },\n  operator: 'deepStrictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong provenance tag blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    path: '.github/workflows/release.yml',\n+   ref: 'refs/tags/v0.1.0',\n-   ref: 'refs/tags/v0.1.1',\n    repository: 'https://github.com/Lingikaushikreddy/release-lens'\n  }\n\n    at validateProvenance (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-406kQ9/scripts/release-control.mjs:70:10)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-406kQ9/scripts/release-control.mjs:163:34)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-406kQ9/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: {\n    repository: 'https://github.com/Lingikaushikreddy/release-lens',\n    path: '.github/workflows/release.yml',\n    ref: 'refs/tags/v0.1.0'\n  },\n  expected: {\n    ref: 'refs/tags/v0.1.1',\n    repository: 'https://github.com/Lingikaushikreddy/release-lens',\n    path: '.github/workflows/release.yml'\n  },\n  operator: 'deepStrictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong provenance repository blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    path: '.github/workflows/release.yml',\n    ref: 'refs/tags/v0.1.1',\n+   repository: 'https://github.com/someone/else'\n-   repository: 'https://github.com/Lingikaushikreddy/release-lens'\n  }\n\n    at validateProvenance (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-JCeZwz/scripts/release-control.mjs:70:10)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-JCeZwz/scripts/release-control.mjs:163:34)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-JCeZwz/scripts/release-control.mjs:176:3 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: {\n    repository: 'https://github.com/someone/else',\n    path: '.github/workflows/release.yml',\n    ref: 'refs/tags/v0.1.1'\n  },\n  expected: {\n    ref: 'refs/tags/v0.1.1',\n    repository: 'https://github.com/Lingikaushikreddy/release-lens',\n    path: '.github/workflows/release.yml'\n  },\n  operator: 'deepStrictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Wrong provenance commit blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Attested source commit must match candidate\n    at validateProvenance (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-TkEZOp/scripts/release-control.mjs:71:3)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-TkEZOp/scripts/release-control.mjs:163:34)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-TkEZOp/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Moved remote tag blocks finalization",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Remote tag moved since the build\n+ actual - expected\n\n+ 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'\n- 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'\n\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-f0M8tt/scripts/release-control.mjs:165:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-f0M8tt/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',\n  expected: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Interrupted verification / missing sixth receipt",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Six registry receipts required\n\n5 !== 6\n\n    at validateReceipts (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-dw7yxo/scripts/release-control.mjs:41:10)\n    at Object.finalize (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-dw7yxo/scripts/release-control.mjs:163:3)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-dw7yxo/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 5,\n  expected: 6,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Interrupted verification / receipt repaired rerun",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "scenario": "Finalized GitHub release / attempt 1",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1",
+        "https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.1/release-verification.json"
+      ],
+      "mutationCommands": [],
+      "stderr": "",
+      "stdout": "Already finalized and verified: https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.1"
+    },
+    {
+      "scenario": "Finalized GitHub release / attempt 2",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1",
+        "https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.1/release-verification.json",
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1",
+        "https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.1/release-verification.json"
+      ],
+      "mutationCommands": [],
+      "stderr": "",
+      "stdout": "Already finalized and verified: https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.1"
+    },
+    {
+      "scenario": "Finalized release with wrong package digest cannot be changed",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Finalized release archive must match the tested package\n+ actual - expected\n\n+ 'sha256:0000000000000000000000000000000000000000000000000000000000000000'\n- 'sha256:055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b'\n\n    at file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-uvnBUN/scripts/publish-github-release.mjs:38:12 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'sha256:0000000000000000000000000000000000000000000000000000000000000000',\n  expected: 'sha256:055429e9e2adef139636ca3a6c2aa31cbd4acb2a7ebb66dd6b1ff1374073a15b',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Finalized release missing evidence cannot be changed",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Finalized release is missing RELEASE_REPORT.md\n    at file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-VbCv1S/scripts/publish-github-release.mjs:37:45 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Finalized release from another source cannot be changed",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1",
+        "https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.1/release-verification.json"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Finalized release sourceCommit\n+ actual - expected\n\n+ 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'\n- 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'\n\n    at file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-uOTdNC/scripts/publish-github-release.mjs:43:87 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',\n  expected: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "Interrupted draft resumes missing uploads and refreshes report",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 0,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1"
+      ],
+      "mutationCommands": [
+        [
+          "release",
+          "upload",
+          "v0.1.1",
+          "work/candidate/release-lens-0.1.1-web.zip",
+          "--repo",
+          "Lingikaushikreddy/release-lens"
+        ],
+        [
+          "release",
+          "upload",
+          "v0.1.1",
+          "work/candidate/release-lens-0.1.1-verification.zip",
+          "--repo",
+          "Lingikaushikreddy/release-lens"
+        ],
+        [
+          "release",
+          "upload",
+          "v0.1.1",
+          "work/candidate/release.json",
+          "--repo",
+          "Lingikaushikreddy/release-lens"
+        ],
+        [
+          "release",
+          "upload",
+          "v0.1.1",
+          "work/candidate/release-verification.json",
+          "--repo",
+          "Lingikaushikreddy/release-lens"
+        ],
+        [
+          "release",
+          "upload",
+          "v0.1.1",
+          "work/candidate/RELEASE_REPORT.md",
+          "--repo",
+          "Lingikaushikreddy/release-lens",
+          "--clobber"
+        ],
+        [
+          "release",
+          "upload",
+          "v0.1.1",
+          "work/candidate/SHA256SUMS",
+          "--repo",
+          "Lingikaushikreddy/release-lens"
+        ],
+        [
+          "release",
+          "edit",
+          "v0.1.1",
+          "--repo",
+          "Lingikaushikreddy/release-lens",
+          "--draft=false",
+          "--latest"
+        ]
+      ],
+      "stderr": "",
+      "stdout": "Verified public release: https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.1"
+    },
+    {
+      "scenario": "Conflicting draft package fails without mutation",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [
+        "https://api.github.com/repos/Lingikaushikreddy/release-lens/releases/tags/v0.1.1"
+      ],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Existing draft archive differs: releaselens-0.1.1.tgz\n    at file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-tHZ3uZ/scripts/publish-github-release.mjs:57:7 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "workflow_dispatch rejected by release-control.mjs",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Only a tag push may publish or finalize a release\n+ actual - expected\n\n+ 'workflow_dispatch'\n- 'push'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-jwIILf/scripts/release-control.mjs:118:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-jwIILf/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-jwIILf/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'workflow_dispatch',\n  expected: 'push',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "workflow_dispatch rejected by publish-github-release.mjs",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Only a tag push may publish or finalize a release\n+ actual - expected\n\n+ 'workflow_dispatch'\n- 'push'\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-jwIILf/scripts/release-control.mjs:118:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-jwIILf/scripts/publish-github-release.mjs:9:11 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'workflow_dispatch',\n  expected: 'push',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "pull_request rejected by release-control.mjs",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Only a tag push may publish or finalize a release\n+ actual - expected\n\n+ 'pull_request'\n- 'push'\n     ^\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-BwUeIc/scripts/release-control.mjs:118:10)\n    at async Object.publication (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-BwUeIc/scripts/release-control.mjs:131:13)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-BwUeIc/scripts/release-control.mjs:176:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'pull_request',\n  expected: 'push',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    },
+    {
+      "scenario": "pull_request rejected by publish-github-release.mjs",
+      "simulatedExternalBoundaries": true,
+      "exitCode": 1,
+      "githubOutput": "",
+      "requests": [],
+      "mutationCommands": [],
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Only a tag push may publish or finalize a release\n+ actual - expected\n\n+ 'pull_request'\n- 'push'\n     ^\n\n    at loadCandidate (file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-BwUeIc/scripts/release-control.mjs:118:10)\n    at async file:///private/var/folders/07/l386nkzn17vg4xrgh_t6pm7w0000gn/T/release-lens-safety-BwUeIc/scripts/publish-github-release.mjs:9:11 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'pull_request',\n  expected: 'push',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.0\n",
+      "stdout": ""
+    }
+  ]
+}

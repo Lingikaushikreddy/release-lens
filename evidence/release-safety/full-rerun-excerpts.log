@@ -1,0 +1,2 @@
+Publish exact archive with npm trusted identity	Validate candidate identity and detect safe reruns	2026-10-17T01:34:47.2217199Z Existing version has identical bytes; resuming verification without republishing
+Verify provenance and finalize GitHub release	Publish the verified release and evidence	2026-10-17T01:35:46.7540447Z Already finalized and verified: https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.1

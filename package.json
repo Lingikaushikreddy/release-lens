@@ -18,7 +18,7 @@
     "test:oracle": "python3 scripts/verify-oracle.py",
     "test:pack": "node scripts/test-pack.mjs",
     "test:registry": "node scripts/test-registry.mjs",
-    "test:release": "node --test scripts/release-control.test.mjs scripts/registry-fetch.test.mjs"
+    "test:release": "node --test scripts/release-control.test.mjs scripts/registry-fetch.test.mjs scripts/release-safety.test.mjs"
   },
   "dependencies": {
     "modern-tar": "0.8.6",

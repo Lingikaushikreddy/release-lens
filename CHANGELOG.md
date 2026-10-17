@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Refreshed browser workbench with a prominent example, archive swapping, exact-byte budget presets, category/change/search filters, section navigation and responsive evidence tables.
+- Clear stale reviews when archives or budgets change; keep JSON downloads complete when table filters are active.
+- Shared release-candidate identity, event, dry-run and archive-integrity guards at both publishing entry points.
+- Isolated failure/rerun integration tests and a read-only GitHub Actions recovery rehearsal; verified existing 0.1.1 is skipped rather than republished and its eight release assets remain unchanged.
+- Release safety report with actual full-workflow rerun, deliberate integrity failure, recovered clean install and raw records. Existing CLI analysis behavior and schema version 1 remain unchanged.
+
 ## 0.1.1 — 2026-10-16
 
 - Tag-triggered GitHub Actions releases with npm trusted publishing and provenance.

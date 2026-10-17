@@ -1,0 +1,91 @@
+{
+  "package": "@kaushikgojo/release-lens",
+  "version": "0.1.1",
+  "verifiedAt": "2026-10-17T01:35:27.938Z",
+  "registry": "https://registry.npmjs.org",
+  "registryPropagation": {
+    "timeoutMs": 600000,
+    "elapsedMs": 891,
+    "requests": [
+      {
+        "url": "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens/0.1.1",
+        "accept": "application/json",
+        "attempts": 1,
+        "retries": 0,
+        "elapsedMs": 613
+      },
+      {
+        "url": "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz",
+        "accept": "*/*",
+        "attempts": 1,
+        "retries": 0,
+        "elapsedMs": 111
+      },
+      {
+        "url": "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens",
+        "accept": "application/vnd.npm.install-v1+json",
+        "attempts": 1,
+        "retries": 0,
+        "elapsedMs": 79
+      },
+      {
+        "url": "https://registry.npmjs.org/%40kaushikgojo%2Frelease-lens",
+        "accept": "application/json",
+        "attempts": 1,
+        "retries": 0,
+        "elapsedMs": 78
+      }
+    ]
+  },
+  "tarball": "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.1.tgz",
+  "sha256": "1caf85d79f2c3f6528e5563a962d0fac30686b7ec7ad3001f19283704f63f5e8",
+  "integrity": "sha512-8CQmW7j8PjlAjdJDgd/XiuuVV4XtIDFFTYc/+XFIna426mIIBeMRO9quDqFLfXYskdwmQJZ2ahC5CDTirwGKGw==",
+  "expectedArtifactSha256": "1caf85d79f2c3f6528e5563a962d0fac30686b7ec7ad3001f19283704f63f5e8",
+  "expectedArtifactMatched": true,
+  "node": "v22.23.3",
+  "installedRuntime": "v22.23.3",
+  "npm": "10.9.9",
+  "npx": "10.9.9",
+  "platform": "win32",
+  "architecture": "x64",
+  "runner": {
+    "os": "Windows",
+    "architecture": "X64",
+    "image": "win25-vs2026",
+    "imageVersion": "20261007.264.1"
+  },
+  "installedExecution": "local npm exec --offline --no through installed .cmd shim",
+  "freshEmptyWorkingDirectories": true,
+  "independentFreshCaches": true,
+  "freshPrivateGlobalPrefix": true,
+  "anonymousNpmConfiguration": true,
+  "installedWithScriptsDisabled": true,
+  "runtimeDependencies": 0,
+  "checks": {
+    "publicMetadataAndTarballIntegrity": true,
+    "publicInstallPackumentsMatchExactVersion": true,
+    "reviewedCIArtifactMatchesRegistryBytes": true,
+    "npxCacheInstallationMatchesRegistry": true,
+    "globalFallbackExcluded": true,
+    "lockfileMatchesRegistry": true,
+    "npxExecutableInferenceAndHelp": true,
+    "installedExecutableHelp": true,
+    "npxAndInstalledReportsMatch": true,
+    "npxInclusiveBudgetPassExit": 0,
+    "npxExceededBudgetExit": 1,
+    "npxMalformedArchiveExit": 2,
+    "npxAtomicOutputAndFailurePreservation": true,
+    "independentGrowthBytes": 18874372,
+    "independentCleanupBytes": -18874372,
+    "deterministicJSON": true,
+    "findingsRetainSideAndPointer": true,
+    "inclusiveBudgetPassExit": 0,
+    "exceededBudgetExit": 1,
+    "malformedArchiveExit": 2,
+    "atomicOutputReplaced": true,
+    "validationFailurePreservesOutput": true,
+    "failedRenameExit": 3,
+    "temporaryFilesCleaned": true,
+    "inputsUnchanged": true
+  }
+}

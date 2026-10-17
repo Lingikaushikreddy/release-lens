@@ -46,6 +46,40 @@ The GitHub release is finalized only after all six cases and provenance pass. It
 
 ## Failure and recovery
 
-If prepublication checks fail, no package is published. If postpublication checks fail, the npm version is already public and immutable, while the GitHub release remains unfinished. Fix the cause and rerun the failed workflow jobs. An identical existing npm tarball is accepted for verification; different bytes fail. No step automatically unpublishes a package, overwrites a finalized release, or moves an existing tag. A new package change needs a new version and tag.
+If prepublication checks fail, no package is published. If postpublication checks fail, the npm version is already public and immutable, while the GitHub release remains unfinished. Inspect the failed job and its evidence before choosing a rerun:
+
+| Failure | Recovery |
+| --- | --- |
+| Transient registry/network failure after a successful publish | Rerun failed jobs against the original tag and candidate. The verifier allows bounded propagation retries. |
+| Incomplete verification receipts or interrupted draft uploads | Restore the missing verification result and rerun. A draft can resume missing uploads; an already matching package archive is retained. |
+| Existing npm version with identical reviewed bytes | The publication step is skipped; fresh registry checks and provenance verification continue. |
+| Existing npm version with different bytes, corrupt candidate, wrong source/provenance, or moved tag | Stop and inspect the cause. The gates fail rather than republish, unpublish, move the tag or replace a finalized release. A changed package needs a new version/tag. |
+
+To resume only failed jobs, use GitHub's **Re-run failed jobs** action or:
+
+```sh
+gh run rerun RUN_ID --failed --repo Lingikaushikreddy/release-lens
+```
+
+GitHub reruns retain the original commit and ref; updating `main` does not change an older run. A source fix belongs in a newly reviewed commit and version/tag. See [GitHub’s rerun behavior](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs).
+
+A full rerun also checks for the existing npm version before publishing. A finalized GitHub release is verified without uploading or editing its files. Draft reruns may refresh verification reports and checksums, but conflicting package/source/web archives fail. Both publication entry points independently reject a dry-run candidate, a non-push event, inconsistent candidate identity, or an archive whose bytes no longer match the reviewed checksum and size.
+
+### Rehearse a failure without publishing
+
+The separate [release-safety.yml](../.github/workflows/release-safety.yml) downloads and pins the already public 0.1.1 archive. Its first attempt flips one bit only in the local expected copy, causing the real anonymous registry verifier to reject the mismatch before installation. Rerunning failed jobs restores the preserved original artifact and runs the full clean-install verifier. It has read-only repository permission, no OIDC publishing permission, and no release-write step.
+
+```sh
+gh workflow run release-safety.yml --ref main \
+  --field inject_failure=true --repo Lingikaushikreddy/release-lens
+gh run list --workflow release-safety.yml --limit 1 \
+  --repo Lingikaushikreddy/release-lens
+# After the expected first-attempt integrity failure:
+gh run rerun RUN_ID --failed --repo Lingikaushikreddy/release-lens
+```
+
+Run `pnpm test:release` for isolated candidate, registry, receipt, provenance and draft/final-release failure cases. These tests execute real script entry points with test-only external-boundary adapters; they do not contact npm or mutate GitHub. Optional raw scenario receipts can be saved with `RELEASE_LENS_SAFETY_REPORT=work/release-safety.json pnpm test:release`.
+
+The [October 16, 2026 verification report](../evidence/RELEASE_SAFETY.md) records a successful real full release rerun with npm publication skipped, an actual failed-job recovery, unchanged original release assets, and the separate injected failure suite.
 
 The registry verifies package origin and distribution integrity. Release Lens's report about an analyzed tarball still does not establish that package's compatibility or safety.
