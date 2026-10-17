@@ -72,9 +72,16 @@ export function createRegistryFetcher({
         const remainingAfterRequest = deadline - performance.now();
         if (remainingAfterRequest <= 0) continue;
         const backoff = Math.min(maxDelayMs, initialDelayMs * 2 ** Math.min(record.attempts - 1, 30));
-        const delayMs = Math.min(remainingAfterRequest, Math.max(backoff, retryAfterMs));
+        const intendedDelayMs = Math.max(backoff, retryAfterMs);
+        const delayMs = Math.min(remainingAfterRequest, intendedDelayMs);
         onRetry({ url: String(url), attempt: record.attempts, delayMs: Math.ceil(delayMs), reason: lastError.message });
         await sleep(Math.ceil(delayMs));
+        // Timers may wake fractionally early. If the next permitted attempt
+        // already exceeded our budget, never let that wake issue a request
+        // before Retry-After or extend the shared propagation deadline.
+        if (intendedDelayMs >= remainingAfterRequest) {
+          throw new Error(`Public npm registry propagation deadline (${timeoutMs}ms) exceeded for ${url}`, { cause: lastError });
+        }
       }
     } finally {
       record.elapsedMs = Math.round(performance.now() - requestStarted);

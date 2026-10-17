@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { performance } from 'node:perf_hooks';
+import { syncBuiltinESMExports } from 'node:module';
+import promiseTimers from 'node:timers/promises';
 import test from 'node:test';
 import { createRegistryFetcher } from './registry-fetch.mjs';
 
@@ -181,4 +183,25 @@ test('does not extend the deadline for Retry-After and validates the bounded tim
   for (const timeoutMs of [0, -1, NaN, 600_001, 1.5]) {
     assert.throws(() => createRegistryFetcher({ timeoutMs }), /timeoutMs/);
   }
+});
+
+test('never retries before Retry-After when a capped deadline timer wakes early', async (t) => {
+  const { url, requests } = await serve(t, (_request, response) => {
+    response.writeHead(429, { 'retry-after': '3600' }).end();
+  });
+  const earlyTimer = t.mock.method(promiseTimers, 'setTimeout', async () => {});
+  syncBuiltinESMExports();
+  t.after(() => {
+    earlyTimer.mock.restore();
+    syncBuiltinESMExports();
+  });
+  const registry = createRegistryFetcher({ ...fast, timeoutMs: 200 });
+  let failure;
+  await assert.rejects(registry.bytes(url), (error) => {
+    failure = error;
+    assert.match(error.message, /deadline/iu);
+    return true;
+  });
+  assert.equal(requests.length, 1, 'A Retry-After beyond the remaining budget must prohibit another request');
+  assert.match(failure.cause.message, /HTTP 429/u);
 });
