@@ -2,9 +2,9 @@
 
 Review exactly what changed between two npm tarballs, without installing or running either package.
 
-[Try the public app](https://lingikaushikreddy.github.io/release-lens/) · [npm package](https://www.npmjs.com/package/@kaushikgojo/release-lens) · [GitHub release](https://github.com/Lingikaushikreddy/release-lens/releases/tag/v0.1.0) · [Registry verification](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040)
+[Try the public app](https://lingikaushikreddy.github.io/release-lens/) · [npm package](https://www.npmjs.com/package/@kaushikgojo/release-lens) · [GitHub release](https://github.com/Lingikaushikreddy/release-lens/releases/latest) · [0.1.0 registry verification](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040)
 
-**0.1.0** includes a browser review app and a Node CLI built on the same bounded streaming analysis core. Compare two `.tgz` files, trace payload growth to individual files, inspect manifest changes and missing literal targets, and export a deterministic JSON report.
+**0.1.1** includes a browser review app and a Node CLI built on the same bounded streaming analysis core. Compare two `.tgz` files, trace payload growth to individual files, inspect manifest changes and missing literal targets, and export a deterministic JSON report.
 
 ## See a release review
 
@@ -23,15 +23,15 @@ Screenshots are from the public app using bundled synthetic fixtures. Analysis r
 Requires Node 22.13+ or Node 24. Run the versioned scoped package directly:
 
 ```sh
-npx --yes @kaushikgojo/release-lens@0.1.0 diff before.tgz after.tgz --format json
+npx --yes @kaushikgojo/release-lens@0.1.1 diff before.tgz after.tgz --format json
 ```
 
-Real registry npx and clean npm installation passed on **Windows, Linux and macOS**, with **Node 22.23.3 / npm 10.9.9** and **Node 24.21.0 / npm 11.19.0**: [all six hosted jobs passed](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040). See [the release report and per-run receipts](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md).
+For **0.1.0**, real registry npx and clean npm installation passed on **Windows, Linux and macOS**, with **Node 22.23.3 / npm 10.9.9** and **Node 24.21.0 / npm 11.19.0**: [all six hosted jobs passed](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040). See [the release report and per-run receipts](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/NPM_RELEASE.md).
 
 Or install this release globally:
 
 ```sh
-npm install --global @kaushikgojo/release-lens@0.1.0
+npm install --global @kaushikgojo/release-lens@0.1.1
 releaselens diff before.tgz after.tgz --format json
 ```
 
