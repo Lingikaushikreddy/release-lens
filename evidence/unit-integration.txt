@@ -1,0 +1,9 @@
+$ vitest run
+
+ RUN  v5.0.5 <workspace>
+
+
+ Test Files  5 passed (5)
+      Tests  68 passed (68)
+   Start at  16:44:53
+   Duration  1.66s (tests 89%, transform 7%, import 3%, worker 1%)

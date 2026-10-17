@@ -1,0 +1,6 @@
+{"engine":"chromium","startup":{"headerHeight":"74px","headingSize":"31px","violations":[]}}
+chromium: styled startup, worker comparison, strict CSP, and fresh document nonce passed.
+{"engine":"firefox","startup":{"headerHeight":"74px","headingSize":"31px","violations":[]}}
+firefox: styled startup, worker comparison, strict CSP, and fresh document nonce passed.
+{"engine":"webkit","startup":{"headerHeight":"74px","headingSize":"31px","violations":[]}}
+webkit: styled startup, worker comparison, strict CSP, and fresh document nonce passed.

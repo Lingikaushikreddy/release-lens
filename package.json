@@ -1,0 +1,38 @@
+{
+  "name": "release-lens-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "build:cli": "node scripts/build-cli.mjs",
+    "build": "pnpm build:cli && vite build",
+    "fixtures": "python3 scripts/make-fixtures.py",
+    "test:oracle": "python3 scripts/verify-oracle.py",
+    "test:pack": "node scripts/test-pack.mjs"
+  },
+  "dependencies": {
+    "modern-tar": "0.8.6",
+    "@noble/hashes": "2.4.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "22.19.15",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.5",
+    "fast-check": "4.10.2",
+    "esbuild": "0.28.2"
+  }
+}

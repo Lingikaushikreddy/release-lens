@@ -1,0 +1,67 @@
+{
+  "pythonVersion": "3.14.7",
+  "nodeVersion": "v22.23.3",
+  "results": [
+    {
+      "pair": "synthetic growth",
+      "status": "pass",
+      "oracle": "CPython tarfile + hashlib; regular members read in memory chunks; no extraction",
+      "filesBefore": 6,
+      "filesAfter": 8,
+      "unpackedDelta": 18874372,
+      "archiveDelta": 18502,
+      "inputSha256": {
+        "fixtures/before.tgz": "3244647d24a8ded42541aea73246d45a73fe1cbf16eb59459bd4e7bac4cba804",
+        "fixtures/after.tgz": "5595426aaa4a8e53507dfdae48dfa996ad26b5df25a9e6466f8d9334f5462889"
+      },
+      "repeatOutputIdentical": true,
+      "elapsedSeconds": 0.7499
+    },
+    {
+      "pair": "synthetic cleanup",
+      "status": "pass",
+      "oracle": "CPython tarfile + hashlib; regular members read in memory chunks; no extraction",
+      "filesBefore": 8,
+      "filesAfter": 6,
+      "unpackedDelta": -18874372,
+      "archiveDelta": -18502,
+      "inputSha256": {
+        "fixtures/after.tgz": "5595426aaa4a8e53507dfdae48dfa996ad26b5df25a9e6466f8d9334f5462889",
+        "fixtures/clean.tgz": "4c7159e9f5a7476b08ca3a7c1eb9be44620a4e6decea3dfc7bad801839fa59e1"
+      },
+      "repeatOutputIdentical": true,
+      "elapsedSeconds": 1.0507
+    },
+    {
+      "pair": "inert hostile text",
+      "status": "pass",
+      "oracle": "CPython tarfile + hashlib; regular members read in memory chunks; no extraction",
+      "filesBefore": 6,
+      "filesAfter": 3,
+      "unpackedDelta": -536,
+      "archiveDelta": -310,
+      "inputSha256": {
+        "fixtures/before.tgz": "3244647d24a8ded42541aea73246d45a73fe1cbf16eb59459bd4e7bac4cba804",
+        "fixtures/hostile/markup.tgz": "6d406773020c7548bbebbaa296c4a81677953aadf7ba7bbebedbeb8eae3fa3dd"
+      },
+      "repeatOutputIdentical": true,
+      "elapsedSeconds": 0.1046
+    },
+    {
+      "pair": "real is-number 6 -> 7",
+      "status": "pass",
+      "oracle": "CPython tarfile + hashlib; regular members read in memory chunks; no extraction",
+      "filesBefore": 4,
+      "filesAfter": 4,
+      "unpackedDelta": 655,
+      "archiveDelta": 256,
+      "inputSha256": {
+        "fixtures/real/is-number-6.0.0.tgz": "62589f25115042c4d34863bc8e6ab4790a8920b811949c30e0ebc5733aca66cb",
+        "fixtures/real/is-number-7.0.0.tgz": "7b75c1057198cf97696909a9bee176c9c5e9bcb5b03bf3ecef2f484defadd51e"
+      },
+      "repeatOutputIdentical": true,
+      "elapsedSeconds": 0.1273
+    }
+  ],
+  "limitations": "Valid supported subset only; not a malformed-input acceptance oracle or proof of package compatibility."
+}

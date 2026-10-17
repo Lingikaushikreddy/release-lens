@@ -1,0 +1,20 @@
+// Verification-only preload. Refuse observable writes, network, and child processes.
+const fs = require('node:fs');
+const fsp = require('node:fs/promises');
+const child = require('node:child_process');
+const net = require('node:net');
+const http = require('node:http');
+const https = require('node:https');
+const dgram = require('node:dgram');
+let blocked = 0;
+const deny = name => function(){ blocked++; throw new Error(`FORBIDDEN_EFFECT:${name}`); };
+for (const k of ['writeFile','writeFileSync','appendFile','appendFileSync','createWriteStream','mkdir','mkdirSync','rename','renameSync','unlink','unlinkSync','rm','rmSync','truncate','truncateSync','symlink','symlinkSync','link','linkSync','copyFile','copyFileSync']) if(fs[k])fs[k]=deny(`fs.${k}`);
+for(const k of ['writeFile','appendFile','mkdir','rename','unlink','rm','truncate','symlink','link','copyFile'])if(fsp[k])fsp[k]=deny(`fs.promises.${k}`);
+for(const k of ['exec','execSync','execFile','execFileSync','spawn','spawnSync','fork'])child[k]=deny(`child_process.${k}`);
+for(const k of ['connect','createConnection'])net[k]=deny(`net.${k}`);
+for(const mod of [http,https])for(const k of ['get','request'])mod[k]=deny(`http.${k}`);
+dgram.createSocket=deny('dgram.createSocket');global.fetch=deny('fetch');
+const writeFlags=fs.constants.O_WRONLY|fs.constants.O_RDWR|fs.constants.O_CREAT|fs.constants.O_TRUNC|fs.constants.O_APPEND;
+const origOpen=fsp.open.bind(fsp);fsp.open=(path,flags,...rest)=>(flags==='r'||(typeof flags==='number'&&(flags&writeFlags)===0))?origOpen(path,flags,...rest):deny('fs.open.write')();
+require('node:module').syncBuiltinESMExports();
+process.on('exit',()=>process.stderr.write(`effect-guard: blocked=${blocked}\n`));

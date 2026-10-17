@@ -1,0 +1,11 @@
+{
+  "review": "fresh independent source review and scoped re-review",
+  "findings": [
+    {"severity":"P2","issue":"FIFO input could block before regular-file guard and remain blocked after SIGINT","resolution":"POSIX O_RDONLY|O_NONBLOCK plus fstat regular-file guard; failing regression then passing; independent refusal observed at34ms"},
+    {"severity":"P2","issue":"CLI text findings omitted before/after side and JSON pointer","resolution":"Include quoted side, pointer and evidence paths; normal/hostile key regressions and installed cleanup comparison pass"},
+    {"severity":"minor","issue":"Packed README linked absent policy/contract documents","resolution":"Ship all five referenced docs; test actual package contents"}
+  ],
+  "rereview":"All prior findings resolved; no introduced serious issue found",
+  "additionalRootFinding":"Vite dev CSS blocked by production CSP; per-response style nonce added to development only and independently checked in three engines",
+  "limits":"Finite review and test evidence; custom deflate boundary scanner remains the main maintenance burden"
+}

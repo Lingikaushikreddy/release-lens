@@ -1,0 +1,25 @@
+{"engine":"chromium","startup":{"headerHeight":"1304px","headingSize":"32px","violations":[{"directive":"style-src-elem","blocked":"inline"}]}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Documented dev startup must not violate CSP.
++ actual - expected
+
++ [
++   {
++     blocked: 'inline',
++     directive: 'style-src-elem'
++   }
++ ]
+- []
+
+    at file://<workspace>/tests/e2e/dev-startup.mjs:24:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [ { directive: 'style-src-elem', blocked: 'inline' } ],
+  expected: [],
+  operator: 'deepStrictEqual'
+}
+
+Node.js v24.5.0

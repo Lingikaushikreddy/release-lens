@@ -1,0 +1,1 @@
+Packed CLI verified from clean consumer (v24.22.0, darwin): +18,874,372 bytes; inclusive budgets; hostile archives; atomic output.

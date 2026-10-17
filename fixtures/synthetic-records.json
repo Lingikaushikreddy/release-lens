@@ -1,0 +1,55 @@
+{
+  "before.tgz": {
+    "source": "scripts/make-fixtures.py; constructed payloads, Python USTAR writer",
+    "sha256": "3244647d24a8ded42541aea73246d45a73fe1cbf16eb59459bd4e7bac4cba804",
+    "archiveBytes": 580,
+    "payloadBytes": 687,
+    "regularFiles": 6,
+    "expected": "accept"
+  },
+  "after.tgz": {
+    "source": "scripts/make-fixtures.py; constructed payloads, Python USTAR writer",
+    "sha256": "5595426aaa4a8e53507dfdae48dfa996ad26b5df25a9e6466f8d9334f5462889",
+    "archiveBytes": 19082,
+    "payloadBytes": 18875059,
+    "regularFiles": 8,
+    "expected": "accept"
+  },
+  "clean.tgz": {
+    "source": "scripts/make-fixtures.py; constructed payloads, Python USTAR writer",
+    "sha256": "4c7159e9f5a7476b08ca3a7c1eb9be44620a4e6decea3dfc7bad801839fa59e1",
+    "archiveBytes": 580,
+    "payloadBytes": 687,
+    "regularFiles": 6,
+    "expected": "accept"
+  },
+  "hostile/markup.tgz": {
+    "source": "scripts/make-fixtures.py; constructed payloads, Python USTAR writer",
+    "sha256": "6d406773020c7548bbebbaa296c4a81677953aadf7ba7bbebedbeb8eae3fa3dd",
+    "archiveBytes": 270,
+    "payloadBytes": 151,
+    "regularFiles": 3,
+    "expected": "accept"
+  },
+  "hostile/traversal.tgz": {
+    "source": "scripts/make-fixtures.py; constructed payloads, Python USTAR writer",
+    "sha256": "b7c015c7559d66c01c24463c62c20dbf5b3620d8f7d9dec7a6463aae4b4550a5",
+    "archiveBytes": 138,
+    "payloadBytes": 4,
+    "regularFiles": 2,
+    "expected": "FORMAT"
+  },
+  "hostile/missing-manifest.tgz": {
+    "source": "scripts/make-fixtures.py; constructed payloads, Python USTAR writer",
+    "sha256": "89f23261e9847301bb5a2ee36519062bf644e6e841193113241ac52b92143905",
+    "archiveBytes": 120,
+    "payloadBytes": 10,
+    "regularFiles": 1,
+    "expected": "FORMAT"
+  },
+  "hostile/checksum.tgz": {
+    "source": "before.tgz; first tar header name bit changed without checksum update",
+    "sha256": "edbc7eda895a5a31b0dbf04d11ad0c49ad90bc997f4562cbbda798e0b0d428a7",
+    "expected": "FORMAT"
+  }
+}

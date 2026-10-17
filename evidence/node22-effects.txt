@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "runtime": "v22.23.3",
+  "inputsUnchanged": true,
+  "guard": "observable JS fs writes, HTTP/net/fetch and child-process functions refused via preload",
+  "guardResult": "effect-guard: blocked=0",
+  "limitations": "Checks instrumented JS entry points and audited shipped code; not an OS sandbox or universal side-effect proof."
+}

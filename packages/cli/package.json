@@ -1,0 +1,25 @@
+{
+  "name": "releaselens",
+  "version": "0.1.0",
+  "description": "Compare exact npm tarball contents offline without installing packages.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "releaselens": "dist/main.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "docs",
+    "evidence/RELEASE.md",
+    "evidence/PUBLIC_RELEASE.md",
+    "fixtures"
+  ],
+  "engines": {
+    "node": ">=22"
+  }
+}

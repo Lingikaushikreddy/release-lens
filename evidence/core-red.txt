@@ -1,0 +1,132 @@
+
+ RUN  v5.0.5 <workspace>
+
+ ❯ tests/manifest.test.ts (3 tests | 3 failed) 3ms
+   × checks nested literal targets and preserves pointers and exclusions 2ms
+   × never claims Node resolution and refuses traversal/external/unsupported values 0ms
+   × escapes pointers for unusual keys and handles __proto__ safely 0ms
+ ❯ tests/compare.test.ts (5 tests | 5 failed) 6ms
+   ❯ exact comparison (5)
+     × accounts for every payload byte, including removals and equal-size edits 2ms
+     × has deterministic escaped manifest pointers and missing vs null values 0ms
+     × canonicalizes object order and does not interpret prototype-like keys 0ms
+     × inclusive integer growth budget 0ms
+     × generated inventories reconcile and reverse signed deltas (seed 20261016) 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/compare.test.ts > exact comparison > accounts for every payload byte, including removals and equal-size edits
+Error: Not implemented
+ ❯ compare packages/core/src/compare.ts:2:75
+      1| import type { Inventory, Report } from './types';
+      2| export function compare(_before:Inventory,_after:Inventory):Report {th…
+       |                                                                           ^
+      3|
+ ❯ tests/compare.test.ts:11:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/compare.test.ts > exact comparison > has deterministic escaped manifest pointers and missing vs null values
+Error: Not implemented
+ ❯ compare packages/core/src/compare.ts:2:75
+      1| import type { Inventory, Report } from './types';
+      2| export function compare(_before:Inventory,_after:Inventory):Report {th…
+       |                                                                           ^
+      3|
+ ❯ tests/compare.test.ts:17:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/compare.test.ts > exact comparison > canonicalizes object order and does not interpret prototype-like keys
+Error: Not implemented
+ ❯ compare packages/core/src/compare.ts:2:75
+      1| import type { Inventory, Report } from './types';
+      2| export function compare(_before:Inventory,_after:Inventory):Report {th…
+       |                                                                           ^
+      3|
+ ❯ tests/compare.test.ts:25:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/compare.test.ts > exact comparison > inclusive integer growth budget
+Error: Not implemented
+ ❯ compare packages/core/src/compare.ts:2:75
+      1| import type { Inventory, Report } from './types';
+      2| export function compare(_before:Inventory,_after:Inventory):Report {th…
+       |                                                                           ^
+      3|
+ ❯ tests/compare.test.ts:29:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/compare.test.ts > exact comparison > generated inventories reconcile and reverse signed deltas (seed 20261016)
+Error: Property failed after 1 tests
+{ seed: 20261016, path: "0:0:0", endOnFailure: true }
+Counterexample: [[],[]]
+Shrunk 2 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+ ❯ buildError node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2469:16
+ ❯ throwIfFailed node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2476:8
+ ❯ reportRunDetails node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2492:14
+ ❯ Module.assert node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2662:7
+ ❯ tests/compare.test.ts:34:6
+     32|  });
+     33|  test('generated inventories reconcile and reverse signed deltas (seed…
+     34|   fc.assert(fc.property(fc.array(fc.nat({max:100000}),{maxLength:80}),…
+       |      ^
+     35|    const make=(xs:number[])=>inventory(xs.map((n,i)=>entry(`f${i}.js`,…
+     36|    expect(r.fileDeltas.reduce((n,f)=>n+f.delta,0)).toBe(y.unpackedByte…
+
+Caused by: Error: Not implemented
+ ❯ compare packages/core/src/compare.ts:2:75
+ ❯ tests/compare.test.ts:35:120
+ ❯ Property.predicate node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:1355:99
+ ❯ Property.run node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:1324:24
+ ❯ propertyExecution node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2549:23
+ ❯ run node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2639:91
+ ❯ runIt node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2542:15
+ ❯ check node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2655:14
+ ❯ Module.assert node_modules/.pnpm/fast-check@4.10.2/node_modules/fast-check/lib/fast-check.js:2660:14
+ ❯ tests/compare.test.ts:34:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/manifest.test.ts > checks nested literal targets and preserves pointers and exclusions
+Error: Not implemented
+ ❯ checkLiteralTargets packages/core/src/manifest.ts:2:76
+      1| import type { Inventory, Finding } from './types';
+      2| export function checkLiteralTargets(_inventory:Inventory):Finding[] {t…
+       |                                                                            ^
+      3|
+ ❯ tests/manifest.test.ts:6:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/manifest.test.ts > never claims Node resolution and refuses traversal/external/unsupported values
+Error: Not implemented
+ ❯ checkLiteralTargets packages/core/src/manifest.ts:2:76
+      1| import type { Inventory, Finding } from './types';
+      2| export function checkLiteralTargets(_inventory:Inventory):Finding[] {t…
+       |                                                                            ^
+      3|
+ ❯ tests/manifest.test.ts:14:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/manifest.test.ts > escapes pointers for unusual keys and handles __proto__ safely
+Error: Not implemented
+ ❯ checkLiteralTargets packages/core/src/manifest.ts:2:76
+      1| import type { Inventory, Finding } from './types';
+      2| export function checkLiteralTargets(_inventory:Inventory):Finding[] {t…
+       |                                                                            ^
+      3|
+ ❯ tests/manifest.test.ts:19:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  8 failed (8)
+   Start at  16:41:01
+   Duration  145ms (transform 46%, import 34%, tests 13%, worker 7%)

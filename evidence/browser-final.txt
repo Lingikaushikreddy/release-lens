@@ -1,0 +1,36 @@
+$ playwright test
+
+Running 24 tests using 3 workers
+
+(node:44508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44507) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44506) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/e2e/review.spec.ts:16:1 › local files produce a useful review, searchable evidence, and canonical JSON (3.1s)
+  ✓   3 [webkit] › tests/e2e/review.spec.ts:16:1 › local files produce a useful review, searchable evidence, and canonical JSON (3.9s)
+  ✓   4 [chromium] › tests/e2e/review.spec.ts:50:1 › replacement clears stale output and clean follow-up removes after-side target warnings (1.2s)
+  ✓   6 [chromium] › tests/e2e/review.spec.ts:61:1 › invalid bytes and invalid budget never leave partial success (367ms)
+  ✓   7 [chromium] › tests/e2e/review.spec.ts:74:1 › analysis cancels and remains usable (495ms)
+  ✓   5 [webkit] › tests/e2e/review.spec.ts:50:1 › replacement clears stale output and clean follow-up removes after-side target warnings (1.3s)
+  ✓   9 [webkit] › tests/e2e/review.spec.ts:61:1 › invalid bytes and invalid budget never leave partial success (460ms)
+  ✓   8 [chromium] › tests/e2e/review.spec.ts:85:1 › loaded application analyzes local files offline without external requests (806ms)
+  ✓  11 [chromium] › tests/e2e/review.spec.ts:99:1 › archive names, paths, and manifest scripts remain literal text (282ms)
+  ✓  10 [webkit] › tests/e2e/review.spec.ts:74:1 › analysis cancels and remains usable (537ms)
+  ✓   2 [firefox] › tests/e2e/review.spec.ts:16:1 › local files produce a useful review, searchable evidence, and canonical JSON (5.9s)
+  ✓  13 [webkit] › tests/e2e/review.spec.ts:85:1 › loaded application analyzes local files offline without external requests (880ms)
+  ✓  15 [webkit] › tests/e2e/review.spec.ts:99:1 › archive names, paths, and manifest scripts remain literal text (446ms)
+  ✓  12 [chromium] › tests/e2e/review.spec.ts:113:1 › examples demonstrate a finding and its corrected follow-up (1.9s)
+  ✓  17 [chromium] › tests/e2e/review.spec.ts:130:1 › keyboard controls and narrow layout remain usable (452ms)
+  ✓  14 [firefox] › tests/e2e/review.spec.ts:50:1 › replacement clears stale output and clean follow-up removes after-side target warnings (2.0s)
+  ✓  18 [firefox] › tests/e2e/review.spec.ts:61:1 › invalid bytes and invalid budget never leave partial success (506ms)
+  ✓  16 [webkit] › tests/e2e/review.spec.ts:113:1 › examples demonstrate a finding and its corrected follow-up (2.0s)
+  ✓  19 [firefox] › tests/e2e/review.spec.ts:74:1 › analysis cancels and remains usable (779ms)
+  ✓  20 [webkit] › tests/e2e/review.spec.ts:130:1 › keyboard controls and narrow layout remain usable (594ms)
+  ✓  21 [firefox] › tests/e2e/review.spec.ts:85:1 › loaded application analyzes local files offline without external requests (973ms)
+  ✓  22 [firefox] › tests/e2e/review.spec.ts:99:1 › archive names, paths, and manifest scripts remain literal text (617ms)
+  ✓  23 [firefox] › tests/e2e/review.spec.ts:113:1 › examples demonstrate a finding and its corrected follow-up (3.9s)
+  ✓  24 [firefox] › tests/e2e/review.spec.ts:130:1 › keyboard controls and narrow layout remain usable (601ms)
+
+  24 passed (17.2s)

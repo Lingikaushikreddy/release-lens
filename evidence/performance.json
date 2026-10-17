@@ -1,0 +1,24 @@
+{
+  "platform": "macOS-15.7.7-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "nodeVersion": "v24.22.0",
+  "observations": [
+    {
+      "case": "18 MiB synthetic growth",
+      "elapsedSeconds": 0.5685,
+      "afterPayloadBytes": 18875059,
+      "afterArchiveBytes": 19082,
+      "maxRssKiB": 82208,
+      "rssBytes": 84180992
+    },
+    {
+      "case": "149 MiB payload near expanded limit",
+      "elapsedSeconds": 2.3208,
+      "afterPayloadBytes": 156237871,
+      "afterArchiveBytes": 152724,
+      "maxRssKiB": 102736,
+      "rssBytes": 105201664
+    }
+  ],
+  "limits": "Compressed input <25MiB, expanded stream <150MiB, each regular payload <=16MiB. High compression stress; not representative of all archives. Peak RSS includes runtime, parser, hashes and report. Maintainer interaction timing still requires a pilot."
+}

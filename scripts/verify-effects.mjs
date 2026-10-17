@@ -1,0 +1,14 @@
+import { spawnSync } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const paths=['fixtures/before.tgz','fixtures/after.tgz','fixtures/hostile/markup.tgz'];
+const digest=p=>createHash('sha256').update(readFileSync(root+p)).digest('hex');
+const before=paths.map(digest);
+const run=spawnSync(process.execPath,['--require',root+'scripts/no-effects.cjs',root+'packages/cli/dist/main.js','diff',root+paths[0],root+paths[2],'--format','json'],{encoding:'utf8'});
+if(run.status!==0||!run.stderr.includes('effect-guard: blocked=0'))throw new Error(run.stderr||'effect guard failed');
+const report=JSON.parse(run.stdout);if(!report.after.entries.some(e=>e.path.includes('<img onerror=')))throw new Error('hostile text absent');
+if(JSON.stringify(before)!==JSON.stringify(paths.map(digest)))throw new Error('input changed');
+const result={status:'pass',runtime:process.version,inputsUnchanged:true,guard:'observable JS fs writes, HTTP/net/fetch and child-process functions refused via preload',guardResult:run.stderr.trim(),limitations:'Checks instrumented JS entry points and audited shipped code; not an OS sandbox or universal side-effect proof.'};
+writeFileSync(root+'evidence/effects.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
