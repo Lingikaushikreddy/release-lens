@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { copyFile, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,7 +14,9 @@ const registry = 'https://registry.npmjs.org';
 assert(process.env.RELEASE_LENS_REGISTRY_ARTIFACT, 'RELEASE_LENS_REGISTRY_ARTIFACT must identify the exact reviewed CI artifact');
 // Resolve the release proof before any registry request or subprocess runs.
 const expectedArtifactSha256 = hash(await readFile(process.env.RELEASE_LENS_REGISTRY_ARTIFACT));
-const temporary = await mkdtemp(join(tmpdir(), 'release-lens-registry-'));
+// Use the canonical macOS /private/var path so npm 11.5.1 writes ordinary
+// node_modules lock keys rather than paths relative to the /var alias.
+const temporary = await mkdtemp(join(await realpath(tmpdir()), 'release-lens-registry-'));
 const privatePrefix = join(temporary, 'npm-prefix');
 const npmDirectory = join(dirname(process.execPath), 'node_modules/npm/bin');
 const command = (name) => process.platform === 'win32' ? process.execPath : name;

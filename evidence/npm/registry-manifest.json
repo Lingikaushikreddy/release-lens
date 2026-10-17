@@ -1,0 +1,41 @@
+{
+  "name": "@kaushikgojo/release-lens",
+  "version": "0.1.0",
+  "registry": "https://registry.npmjs.org/",
+  "latest": "0.1.0",
+  "publishedAt": "2026-10-17T00:34:24.453Z",
+  "publisher": "kaushikgojo",
+  "gitHead": "ca901bff19edcd0aceb60e49324121ae44d1085e",
+  "repository": {
+    "url": "git+https://github.com/Lingikaushikreddy/release-lens.git",
+    "type": "git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://lingikaushikreddy.github.io/release-lens/",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "releaselens": "dist/main.js"
+  },
+  "runtimeDependencies": {},
+  "lifecycleScripts": {},
+  "dist": {
+    "shasum": "475fda72c4b37c53d5c538bbf7ee6da8f94a7263",
+    "tarball": "https://registry.npmjs.org/@kaushikgojo/release-lens/-/release-lens-0.1.0.tgz",
+    "fileCount": 19,
+    "integrity": "sha512-TRN7N5Qty46V4BLQw/HGLOGZq2Oz4HvrK4pvkibZq9hdr0e+n6QWJIxe4q1vGuovT3eT7CByKCDTjwytQUnCKw==",
+    "signatures": [
+      {
+        "sig": "MEUCIQCrUeMgUygNOzDkMuymJIMzye6ifnKRmZQK5LJyXJx9dQIgJ94cCNPiYfnUeydyh1caxyuJoUY2xRoKnJPsOrKza7Q=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEYCIQCAC1YJ6Gmn3gdgtDSapdayt1JcOgUn4qrA0oUI/PXZ5QIhAMoQYnJxlHj9XM85R/U/lcwJGFArqj4K0Oepp2pLg4U7"
+      }
+    ],
+    "unpackedSize": 128434
+  }
+}

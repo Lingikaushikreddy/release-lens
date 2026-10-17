@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-17T00:33:17.409230+00:00",
+  "sourceCommit": "d6afbbe5c33f2341cc5cf898e63b74b9757c9423",
+  "ciRun": {
+    "id": 38986361404,
+    "url": "https://github.com/Lingikaushikreddy/release-lens/actions/runs/38986361404",
+    "conclusion": "success"
+  },
+  "githubArtifact": {
+    "id": 12083855461,
+    "name": "github-pages",
+    "apiDigest": "sha256:d6a20f0d5f5fdf83721da9e49f27f9ad034baf901c2d60e67c3f405f966acbd5",
+    "apiDigestScope": "GitHub artifact archive envelope; distinct from artifact.tar"
+  },
+  "pagesArtifact": {
+    "path": "ci-pages/artifact.tar",
+    "bytes": 327680,
+    "sha256": "f66a78dcbd6ad8e94799304e808eccc8ccedc91bd83803974eb5a210b093859b",
+    "regularFiles": 10,
+    "regularFileBytes": 311590,
+    "inspectedWithoutFilesystemExtraction": true
+  },
+  "deploymentUrl": "https://lingikaushikreddy.github.io/release-lens/",
+  "httpsCertificateVerification": true,
+  "comparison": "Exact file payload bytes from the CI github-pages artifact.tar against HTTPS response body bytes requested with Accept-Encoding: identity.",
+  "regularFilesChecked": 10,
+  "httpResponsesChecked": 11,
+  "same": true,
+  "files": [
+    {
+      "path": "LICENSE",
+      "url": "https://lingikaushikreddy.github.io/release-lens/LICENSE",
+      "artifactBytes": 1082,
+      "artifactSha256": "412dc3364b8cf4a17c093a0b7fdac090ccdf53b45622817b8e756bf4a20c54a8",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/LICENSE",
+      "responseBytes": 1082,
+      "responseSha256": "412dc3364b8cf4a17c093a0b7fdac090ccdf53b45622817b8e756bf4a20c54a8",
+      "contentType": "application/octet-stream",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "url": "https://lingikaushikreddy.github.io/release-lens/THIRD_PARTY_NOTICES.md",
+      "artifactBytes": 5687,
+      "artifactSha256": "72cb8244f87bb1c999aa29bafcb5dacc6294f32a2d6f5f0ef672930911be5c6e",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/THIRD_PARTY_NOTICES.md",
+      "responseBytes": 5687,
+      "responseSha256": "72cb8244f87bb1c999aa29bafcb5dacc6294f32a2d6f5f0ef672930911be5c6e",
+      "contentType": "text/markdown; charset=utf-8",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "assets/index-9wjJAbj2.js",
+      "url": "https://lingikaushikreddy.github.io/release-lens/assets/index-9wjJAbj2.js",
+      "artifactBytes": 268051,
+      "artifactSha256": "97a97f861f937b8c81aa6bb25efb2fad895cff3e65365e2144b72d2c4fe873ef",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/assets/index-9wjJAbj2.js",
+      "responseBytes": 268051,
+      "responseSha256": "97a97f861f937b8c81aa6bb25efb2fad895cff3e65365e2144b72d2c4fe873ef",
+      "contentType": "application/javascript; charset=utf-8",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "assets/index-CvGSyj0W.css",
+      "url": "https://lingikaushikreddy.github.io/release-lens/assets/index-CvGSyj0W.css",
+      "artifactBytes": 15171,
+      "artifactSha256": "09a9110d02fc075c4c69fee99c94feee0c4b5354a1ec3e0cbf1ddd2b4bb216dd",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/assets/index-CvGSyj0W.css",
+      "responseBytes": 15171,
+      "responseSha256": "09a9110d02fc075c4c69fee99c94feee0c4b5354a1ec3e0cbf1ddd2b4bb216dd",
+      "contentType": "text/css; charset=utf-8",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "examples/after.tgz",
+      "url": "https://lingikaushikreddy.github.io/release-lens/examples/after.tgz",
+      "artifactBytes": 19082,
+      "artifactSha256": "5595426aaa4a8e53507dfdae48dfa996ad26b5df25a9e6466f8d9334f5462889",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/examples/after.tgz",
+      "responseBytes": 19082,
+      "responseSha256": "5595426aaa4a8e53507dfdae48dfa996ad26b5df25a9e6466f8d9334f5462889",
+      "contentType": "application/octet-stream",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "examples/before.tgz",
+      "url": "https://lingikaushikreddy.github.io/release-lens/examples/before.tgz",
+      "artifactBytes": 580,
+      "artifactSha256": "3244647d24a8ded42541aea73246d45a73fe1cbf16eb59459bd4e7bac4cba804",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/examples/before.tgz",
+      "responseBytes": 580,
+      "responseSha256": "3244647d24a8ded42541aea73246d45a73fe1cbf16eb59459bd4e7bac4cba804",
+      "contentType": "application/octet-stream",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "examples/clean.tgz",
+      "url": "https://lingikaushikreddy.github.io/release-lens/examples/clean.tgz",
+      "artifactBytes": 580,
+      "artifactSha256": "4c7159e9f5a7476b08ca3a7c1eb9be44620a4e6decea3dfc7bad801839fa59e1",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/examples/clean.tgz",
+      "responseBytes": 580,
+      "responseSha256": "4c7159e9f5a7476b08ca3a7c1eb9be44620a4e6decea3dfc7bad801839fa59e1",
+      "contentType": "application/octet-stream",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "examples/hostile.tgz",
+      "url": "https://lingikaushikreddy.github.io/release-lens/examples/hostile.tgz",
+      "artifactBytes": 270,
+      "artifactSha256": "6d406773020c7548bbebbaa296c4a81677953aadf7ba7bbebedbeb8eae3fa3dd",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/examples/hostile.tgz",
+      "responseBytes": 270,
+      "responseSha256": "6d406773020c7548bbebbaa296c4a81677953aadf7ba7bbebedbeb8eae3fa3dd",
+      "contentType": "application/octet-stream",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "favicon.svg",
+      "url": "https://lingikaushikreddy.github.io/release-lens/favicon.svg",
+      "artifactBytes": 207,
+      "artifactSha256": "d1bccc55d6236831b75e44264ee299cbcbb7a124ff3174de71ea1d7bb1b373b5",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/favicon.svg",
+      "responseBytes": 207,
+      "responseSha256": "d1bccc55d6236831b75e44264ee299cbcbb7a124ff3174de71ea1d7bb1b373b5",
+      "contentType": "image/svg+xml",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "index.html",
+      "url": "https://lingikaushikreddy.github.io/release-lens/index.html",
+      "artifactBytes": 880,
+      "artifactSha256": "9abf98196509ffdad077b674cce695d5557077a4b1a981a3225e9fc6ed17da7f",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/index.html",
+      "responseBytes": 880,
+      "responseSha256": "9abf98196509ffdad077b674cce695d5557077a4b1a981a3225e9fc6ed17da7f",
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "same": true
+    },
+    {
+      "path": "index.html",
+      "url": "https://lingikaushikreddy.github.io/release-lens/",
+      "artifactBytes": 880,
+      "artifactSha256": "9abf98196509ffdad077b674cce695d5557077a4b1a981a3225e9fc6ed17da7f",
+      "status": 200,
+      "finalUrl": "https://lingikaushikreddy.github.io/release-lens/",
+      "responseBytes": 880,
+      "responseSha256": "9abf98196509ffdad077b674cce695d5557077a4b1a981a3225e9fc6ed17da7f",
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "same": true
+    }
+  ],
+  "scopeLimits": [
+    "Checks all regular files present in this CI Pages artifact and the public root index alias at the recorded verification time.",
+    "Does not enumerate additional server paths or establish absence of stale/unlisted files.",
+    "Compares HTTP response entity bodies, not transport compression, headers, or TLS wire bytes.",
+    "Does not test browser behavior, runtime interactions, package compatibility, malware safety, or npm provenance."
+  ]
+}
