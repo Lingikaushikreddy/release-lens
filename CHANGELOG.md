@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.1.2 — 2026-10-16
 
+- Interactive tarball x-ray introduces the real synthetic growth and cleanup examples while keeping preview state separate from analyzed evidence.
 - Refreshed browser workbench with a prominent example, archive swapping, exact-byte budget presets, category/change/search filters, section navigation and responsive evidence tables.
 - Clear stale reviews when archives or budgets change; keep JSON downloads complete when table filters are active.
 - Shared release-candidate identity, event, dry-run and archive-integrity guards at both publishing entry points.
@@ -23,4 +24,4 @@
 - Bundled growth/cleanup examples, hostile fixtures, real public artifact pair and independent Python oracle.
 - Read-only offline analysis with explicit unsupported-input handling.
 
-Public GitHub release and GitHub Pages deployment are gated on the full hosted verification matrix. Download the CLI tarball from GitHub Releases; npm registry publication is not part of this release. Real maintainer pilots remain outstanding.
+Historical 0.1.0 GitHub publication was gated on hosted verification; scoped npm publication was added afterward. Automated trusted npm publication and clean registry verification were introduced in 0.1.1. Real maintainer pilots remain outstanding.

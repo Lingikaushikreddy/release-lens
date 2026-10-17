@@ -54,16 +54,59 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .header-nav a:hover { color: var(--blue); }
 .header-nav a span { margin-left: 4px; }
 main { max-width: 1264px; padding: 0 32px; margin: 0 auto; }
-.intro { display: flex; justify-content: space-between; align-items: center; gap: 45px; padding: 51px 0 37px; }
-.intro-copy > p { font-size: 16px; line-height: 1.7; color: var(--muted); max-width: 600px; margin-top: 20px; }
-.hero-example-button { margin-top: 16px; padding: 0 0 3px; border: 0; border-bottom: 1px solid #bcccf9; border-radius: 0; color: #325bfa; background: transparent; font-size: 12px; font-weight: 600; }
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 60px; padding: 42px 0 40px; }
+.intro-copy { min-width: 0; }
+.intro-copy > p { font-size: 16px; line-height: 1.7; color: var(--muted); max-width: 490px; margin-top: 22px; }
+.hero-example-button { margin-top: 22px; padding: 0 0 5px; border: 0; border-bottom: 1px solid #a6baf8; border-radius: 0; color: #325bfa; background: transparent; font-size: 14px; font-weight: 650; }
 .hero-example-button:hover { background: transparent; border-color: #325bfa; color: #2449d3; }
 .hero-example-button > span { margin-left: 10px; }
-.intro-note { display: flex; align-items: flex-start; gap: 14px; min-width: 260px; max-width: 310px; padding: 16px 0 16px 27px; border-left: 1px solid #d5e0f1; }
+.intro-note { display: flex; align-items: center; gap: 11px; margin-top: 34px; max-width: 360px; }
 .intro-note strong { font-size: 13px; color: #314b6a; font-weight: 650; }
-.intro-note p { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 5px; }
+.intro-note p { color: var(--muted); font-size: 11px; line-height: 1.7; margin-top: 2px; }
 .privacy-symbol { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: #e5f3f1; border-radius: 50%; flex-shrink: 0; color: var(--teal); }
 .privacy-symbol svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.6; }
+.xray-demo { --xray-accent: #935016; --xray-tint: #fff1dc; min-width: 0; border: 1px solid #b6c8f5; border-radius: 16px; background: #fff; box-shadow: 8px 8px 0 #dfe8fd; overflow: hidden; }
+.xray-clean { --xray-accent: #0c746c; --xray-tint: #e6f5ef; }
+.xray-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 21px 23px 16px; }
+.xray-heading h2 { font-size: 17px; letter-spacing: -.4px; }
+.xray-heading > span { color: #596b8b; font-size: 10px; }
+.xray-switch { display: flex; margin: 0 23px; border: 1px solid #c8d5ef; padding: 3px; gap: 3px; border-radius: 7px; background: #f1f5fd; }
+.xray-switch button { flex: 1; border: 1px solid transparent; background: transparent; border-radius: 4px; color: #556987; padding: 8px 5px; font-size: 11px; font-weight: 600; }
+.xray-switch button:hover { background: #e5edfd; color: var(--ink); }
+.xray-switch button[aria-pressed=true] { background: #fff; color: #254dcc; border-color: #c0cef0; box-shadow: 0 1px 2px #1631650d; }
+.xray-switch button:focus-visible { position: relative; z-index: 1; }
+.xray-illustration { position: relative; padding: 15px 20px 0; }
+.xray-illustration svg { display: block; width: 100%; height: auto; max-height: 220px; }
+.xray-filename { position: absolute; top: 21px; left: 24px; font-family: "SFMono-Regular", Consolas, monospace; color: #526a91; font-size: 10px; }
+.xray-layer-label { position: absolute; bottom: 10px; right: 24px; color: var(--xray-accent); background: var(--xray-tint); border: 1px solid currentColor; border-radius: 4px; padding: 4px 7px; font-size: 9px; }
+.xray-shadow { fill: #edf2fd; }
+.xray-spine { fill: #18396e; }
+.xray-base { fill: #325bfa; stroke: #244ce2; stroke-width: 1; }
+.xray-code-edge { fill: #9bb5fa; stroke: #5279e5; }
+.xray-code { fill: #eaf0ff; stroke: #5279e5; }
+.xray-code-lines { stroke: #466bd7; stroke-width: 4; stroke-linecap: round; }
+.xray-fixture-edge { fill: #d39538; stroke: #ac6e1b; }
+.xray-fixture { fill: #f2c477; stroke: #bb7b23; }
+.xray-fixture-top { fill: #ffda98; stroke: #bb7b23; }
+.xray-fixture-lines { stroke: #b2721d; stroke-width: 4; stroke-linecap: round; }
+.xray-guide { stroke: #9db5e5; stroke-width: 1; }
+.xray-removed { stroke: #5a9d97; stroke-width: 1.5; stroke-dasharray: 5 5; }
+.xray-check-disc { fill: #0c746c; stroke: #fff; stroke-width: 5; }
+.xray-check { stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.xray-readout { display: grid; grid-template-columns: 1.15fr 1fr; margin: 1px 23px 0; gap: 16px; align-items: center; padding: 15px 0 13px; border-top: 1px solid #dce5f6; }
+.xray-delta > span { display: block; color: #5c6d85; font-size: 10px; }
+.xray-delta > strong { display: block; color: var(--xray-accent); font-size: clamp(22px, 2.1vw, 28px); font-weight: 750; line-height: 1.3; letter-spacing: -1.1px; margin-top: 3px; white-space: nowrap; }
+.xray-delta small { font-size: 12px; font-weight: 500; letter-spacing: 0; }
+.xray-finding { display: flex; align-items: center; gap: 8px; padding-left: 16px; border-left: 1px solid #dce5f6; }
+.xray-finding-icon { display: grid; place-items: center; height: 23px; width: 23px; flex-shrink: 0; border-radius: 50%; background: var(--xray-tint); color: var(--xray-accent); font-size: 12px; font-weight: 750; }
+.xray-finding strong { display: block; color: var(--xray-accent); font-size: 10px; font-weight: 650; }
+.xray-finding code { display: block; color: #526781; font-size: 9px; margin-top: 3px; overflow-wrap: anywhere; }
+.xray-context { margin: 0 23px 16px; color: #5c6d85; font-size: 10px; line-height: 1.7; max-width: 430px; }
+.xray-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 23px; border-top: 1px solid #dce5f6; background: #f5f8ff; }
+.xray-footer p { color: #5b6d8c; font-size: 9px; line-height: 1.7; max-width: 210px; }
+.xray-footer button { flex-shrink: 0; border-color: #adc2f8; border-radius: 5px; color: #294fc8; background: #fff; padding: 8px 10px; font-size: 10px; }
+.xray-footer button:hover { background: #eaf0ff; }
+.xray-footer button span { margin-left: 7px; }
 .comparison-panel { border: 1px solid #cdd9ed; border-radius: 17px; background: #fff; overflow: hidden; box-shadow: 0 10px 35px #18346b08; }
 .comparison-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px 0; }
 .comparison-heading h2 { font-size: 18px; letter-spacing: -.4px; }
@@ -264,10 +307,21 @@ footer { margin-top: 37px; padding: 27px 0 31px; border-top: 1px solid #dae4f3; 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .skip-link { position: absolute; left: 20px; top: -100px; background: #fff; color: var(--blue); z-index: 10; padding: 11px 16px; border-radius: 5px; }
 .skip-link:focus { top: 15px; }
-@media (min-width: 1450px) { .intro { padding-top: 63px; padding-bottom: 45px; } }
+@media (min-width: 1450px) { .intro { padding-top: 48px; padding-bottom: 46px; } }
 @media (max-width: 1050px) {
-  .intro-note { min-width: 235px; padding-left: 20px; }
-  .intro { gap: 30px; }
+  .intro { gap: 34px; }
+  .intro-copy h1 { font-size: 51px; letter-spacing: -2.3px; }
+  .intro-copy > p { font-size: 14px; }
+  .xray-heading { padding-left: 18px; padding-right: 18px; }
+  .xray-switch { margin-left: 18px; margin-right: 18px; }
+  .xray-switch button { font-size: 10px; }
+  .xray-readout { margin-left: 18px; margin-right: 18px; gap: 11px; }
+  .xray-delta > strong { font-size: 22px; }
+  .xray-finding { padding-left: 11px; gap: 6px; }
+  .xray-finding-icon { display: none; }
+  .xray-context { margin-left: 18px; margin-right: 18px; }
+  .xray-footer { gap: 11px; padding-left: 18px; padding-right: 18px; }
+  .xray-footer p { font-size: 8px; }
   .archive-workspace { grid-template-columns: minmax(0, 1fr) 230px; gap: 22px; padding-left: 23px; padding-right: 23px; }
   .archive-pair { gap: 37px; }
   .archive-picker { padding: 17px 14px; }
@@ -285,9 +339,18 @@ footer { margin-top: 37px; padding: 27px 0 31px; border-top: 1px solid #dae4f3; 
   .header-nav { gap: 20px; }
   .version { display: none; }
   main { padding: 0 24px; }
-  .intro { padding-top: 34px; padding-bottom: 29px; align-items: flex-start; }
+  .intro { grid-template-columns: 1fr; padding-top: 34px; padding-bottom: 34px; gap: 30px; }
+  .intro-copy h1 { font-size: 58px; letter-spacing: -2.7px; }
   .intro-copy > p { font-size: 14px; margin-top: 16px; max-width: 520px; }
-  .intro-note { display: none; }
+  .intro-note { margin-top: 22px; }
+  .xray-demo { max-width: 600px; width: 100%; justify-self: center; }
+  .xray-illustration svg { max-height: 210px; }
+  .xray-delta > strong { font-size: 28px; }
+  .xray-finding-icon { display: grid; }
+  .xray-finding strong { font-size: 11px; }
+  .xray-finding code { font-size: 10px; }
+  .xray-context { max-width: none; }
+  .xray-footer p { font-size: 9px; max-width: 290px; }
   .comparison-heading { padding-left: 22px; padding-right: 22px; }
   .archive-workspace { grid-template-columns: 1fr; gap: 20px; padding: 19px 22px 22px; }
   .archive-pair { gap: 42px; }
@@ -344,8 +407,36 @@ footer { margin-top: 37px; padding: 27px 0 31px; border-top: 1px solid #dae4f3; 
   .header-nav a:first-child { display: none; }
   main { padding: 0 17px; }
   .intro { padding-top: 31px; padding-bottom: 26px; }
-  h1 { font-size: 43px; letter-spacing: -2px; line-height: 1.11; }
+  h1, .intro-copy h1 { font-size: 43px; letter-spacing: -2px; line-height: 1.11; }
   .intro-copy > p { font-size: 13px; line-height: 1.75; margin-top: 16px; max-width: 350px; }
+  .hero-example-button { font-size: 13px; margin-top: 17px; }
+  .intro-note { margin-top: 21px; }
+  .intro-note strong { font-size: 12px; }
+  .intro-note p { font-size: 10px; }
+  .privacy-symbol { width: 31px; height: 31px; }
+  .privacy-symbol svg { width: 17px; height: 17px; }
+  .xray-demo { border-radius: 12px; box-shadow: 5px 5px 0 #dfe8fd; }
+  .xray-heading { padding: 17px 16px 14px; }
+  .xray-heading h2 { font-size: 16px; }
+  .xray-heading > span { font-size: 9px; }
+  .xray-switch { margin: 0 16px; }
+  .xray-switch button { font-size: 9px; padding: 8px 4px; }
+  .xray-illustration { padding: 15px 9px 0; }
+  .xray-filename { top: 19px; left: 18px; font-size: 9px; }
+  .xray-layer-label { right: 17px; bottom: 8px; font-size: 8px; }
+  .xray-readout { margin: 5px 16px 0; gap: 10px; padding-top: 14px; padding-bottom: 12px; }
+  .xray-delta > span { font-size: 9px; }
+  .xray-delta > strong { font-size: 22px; letter-spacing: -.8px; }
+  .xray-delta small { font-size: 10px; }
+  .xray-finding { padding-left: 10px; }
+  .xray-finding-icon { display: none; }
+  .xray-finding strong { font-size: 9px; }
+  .xray-finding code { font-size: 8px; }
+  .xray-context { margin: 0 16px 14px; font-size: 9px; }
+  .xray-footer { padding: 12px 16px; gap: 12px; }
+  .xray-footer p { max-width: 170px; font-size: 8px; }
+  .xray-footer button { padding: 8px; font-size: 9px; }
+  .xray-footer button span { margin-left: 4px; }
   .comparison-panel { border-radius: 13px; }
   .comparison-heading { padding: 20px 17px 0; gap: 12px; }
   .comparison-heading h2 { font-size: 16px; }

@@ -28,6 +28,43 @@ function ArchiveIcon() {
   return <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="m9 14 15-8 15 8v20l-15 8-15-8V14Z" /><path d="m9 14 15 8 15-8M24 22v20M17 10l15 8v8l-5 2v-8" /></svg>;
 }
 
+function ReleasePreview({ onReview, busy }: { onReview: (clean: boolean) => void; busy: boolean }) {
+  const [clean, setClean] = useState(false);
+  return <section className={`xray-demo${clean ? ' xray-clean' : ''}`} aria-label="Release example preview">
+    <div className="xray-heading"><h2>Tarball x-ray</h2><span>Synthetic example</span></div>
+    <fieldset className="xray-switch"><legend className="sr-only">Preview an example release</legend><button aria-pressed={!clean} aria-controls="xray-preview" onClick={() => setClean(false)}>Added fixtures</button><button aria-pressed={clean} aria-controls="xray-preview" onClick={() => setClean(true)}>Clean follow-up preview</button></fieldset>
+    <div className="xray-preview" id="xray-preview" aria-live="polite">
+      <div className="xray-illustration" aria-hidden="true">
+        <span className="xray-filename">{clean ? 'clean.tgz' : 'after.tgz'}</span>
+        <svg viewBox="0 0 480 220" fill="none">
+          <path className="xray-shadow" d="m58 163 177 44 187-68-177-44-187 68Z" />
+          <path className="xray-spine" d="m58 140 177 44 187-68v15l-187 68-177-44v-15Z" />
+          <path className="xray-base" d="m58 140 177 44 187-68-177-44-187 68Z" />
+          <path className="xray-code-edge" d="m58 121 177 44 187-68v9l-187 68-177-44v-9Z" />
+          <path className="xray-code" d="m58 121 177 44 187-68-177-44-187 68Z" />
+          <path className="xray-code-lines" d="m116 117 87 22m-60-32 87 22m-60-32 51 13" />
+          {clean ? <>
+            <path className="xray-removed" d="m58 74 177 44 187-68-177-44-187 68Zm0 23 177 44 187-68-177-44-187 68Z" />
+            <circle className="xray-check-disc" cx="355" cy="56" r="25" />
+            <path className="xray-check" d="m344 56 8 8 15-17" />
+          </> : <>
+            <path className="xray-fixture-edge" d="m58 97 177 44 187-68v10l-187 68-177-44V97Z" />
+            <path className="xray-fixture" d="m58 97 177 44 187-68-177-44-187 68Z" />
+            <path className="xray-fixture-edge" d="m58 74 177 44 187-68v10l-187 68-177-44V74Z" />
+            <path className="xray-fixture-top" d="m58 74 177 44 187-68-177-44-187 68Z" />
+            <path className="xray-fixture-lines" d="m122 70 87 22m-60-32 87 22" />
+          </>}
+          <path className="xray-guide" d="M41 67H23v88h18M439 48h18v88h-18" />
+        </svg>
+        <span className="xray-layer-label">{clean ? 'Two fixture layers removed' : 'Two extra fixture layers'}</span>
+      </div>
+      <div className="xray-readout"><div className="xray-delta"><span>Unpacked change</span><strong>{clean ? '−' : '+'}18,874,372 <small>B</small></strong></div><div className="xray-finding"><span className="xray-finding-icon" aria-hidden="true">{clean ? '✓' : '!'}</span><div><strong>{clean ? 'Bin target repaired' : 'Missing bin target'}</strong><code>{clean ? 'dist/cli.js' : 'dist/missing.js'}</code></div></div></div>
+      <p className="xray-context">{clean ? 'Two fixture paths removed. No missing literal local targets in the after archive.' : 'training-a.bin + training-b.bin add 18 MiB of fixture payload.'} Total change also includes package.json.</p>
+    </div>
+    <div className="xray-footer"><p>Illustrated layers, not to scale. Preview changes leave your comparison untouched.</p><button onClick={() => onReview(clean)} disabled={busy}>Review this example <span aria-hidden="true">↗</span></button></div>
+  </section>;
+}
+
 function ArchivePicker({ side, file, onChange }: { side: 'Before' | 'After'; file: File | null; onChange: (file: File | null) => void }) {
   const [dragging, setDragging] = useState(false);
   function drop(event: DragEvent<HTMLElement>) {
@@ -198,7 +235,7 @@ function App() {
     <a className="skip-link" href="#main" tabIndex={0}>Skip to comparison</a>
     <header className="app-header"><a href="#main" className="brand" aria-label="Release Lens home"><LensMark /><span>Release Lens</span><span className="version">Open source</span></a><nav className="header-nav" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="https://github.com/Lingikaushikreddy/release-lens" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></nav></header>
     <main id="main" tabIndex={-1}>
-      <div className="intro"><div className="intro-copy"><h1>A closer look.<br />A better release.</h1><p>See exactly what your npm package ships. Compare two archives, trace every byte, and catch missing targets before you publish.</p><button className="hero-example-button" onClick={() => void loadExample()}>Explore an example <span aria-hidden="true">↗</span></button></div><div className="intro-note"><span className="privacy-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="3" /><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2" /></svg></span><div><strong>Your files. Your device.</strong><p>No upload, no install.<br />Just a clearer view of your release.</p></div></div></div>
+      <div className="intro"><div className="intro-copy"><h1>A closer look.<br />A better release.</h1><p>See exactly what your npm package ships. Compare two archives, trace every byte, and catch missing targets before you publish.</p><button className="hero-example-button" onClick={() => void loadExample()}>Explore an example <span aria-hidden="true">↗</span></button><div className="intro-note"><span className="privacy-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="3" /><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2" /></svg></span><div><strong>Your files. Your device.</strong><p>No upload. Package scripts never run.</p></div></div></div><ReleasePreview onReview={clean => void loadExample(clean)} busy={busy} /></div>
       <section className="comparison-panel" aria-label="Archive comparison"><div className="comparison-heading"><div><h2>Compare your archives</h2><p>One trusted release. One new candidate.</p></div><span className="local-label"><span />Local analysis</span></div><div className="archive-workspace"><div className="archive-pair"><ArchivePicker side="Before" file={before} onChange={file => replace('before', file)} /><button className="swap-button" onClick={swapArchives} aria-label="Swap archives" title="Swap before and after archives" disabled={busy || !before || !after}><span aria-hidden="true">⇄</span></button><ArchivePicker side="After" file={after} onChange={file => replace('after', file)} /></div><div className="compare-controls"><div className="budget-title"><label htmlFor="budget">Growth budget in bytes <span>(optional)</span></label><p>Maximum unpacked growth. Equal to the limit passes.</p></div><input id="budget" type="text" inputMode="numeric" value={budget} placeholder="No growth limit" autoComplete="off" onChange={event => changeBudget(event.target.value)} /><fieldset className="budget-presets"><legend className="sr-only">Budget presets</legend>{[{ label: 'None', value: '' }, { label: '1 MiB', value: '1048576' }, { label: '10 MiB', value: '10485760' }].map(preset => <button key={preset.label} aria-pressed={budget === preset.value} onClick={() => changeBudget(preset.value)}>{preset.label}</button>)}</fieldset><div className="action-row"><button className="primary" onClick={() => start()} disabled={busy}>Compare archives<span aria-hidden="true">↗</span></button>{busy && <button className="cancel-button" onClick={() => { clearWork(); setStatus('Analysis cancelled. You can compare again.'); }}>Cancel analysis</button>}</div></div></div><p className="privacy-note"><span aria-hidden="true">✓</span> Archive contents are read locally. Package scripts are never run.<span className="format-note">.tgz / .tar.gz</span></p></section>
       {error && <div className="error-box" role="alert"><strong>Comparison needs attention</strong><p>{error}</p></div>}
       <div role="status" aria-live="polite" className={`analysis-status${busy ? ' is-busy' : ''}`}>{status}{busy && <progress aria-label="Analysis in progress" />}</div>

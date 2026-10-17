@@ -2,19 +2,19 @@
 
 Review exactly what changed between two npm tarballs, without installing or running either package.
 
-[Try the public app](https://lingikaushikreddy.github.io/release-lens/) · [npm package](https://www.npmjs.com/package/@kaushikgojo/release-lens) · [GitHub release](https://github.com/Lingikaushikreddy/release-lens/releases/latest) · [0.1.0 registry verification](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040)
+[Try the public app](https://lingikaushikreddy.github.io/release-lens/) · [npm package](https://www.npmjs.com/package/@kaushikgojo/release-lens) · [GitHub release](https://github.com/Lingikaushikreddy/release-lens/releases/latest) · [0.1.2 release verification](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.2/RELEASE_REPORT.md)
 
-**0.1.1** includes a browser review app and a Node CLI built on the same bounded streaming analysis core. Compare two `.tgz` files, trace payload growth to individual files, inspect manifest changes and missing literal targets, and export a deterministic JSON report.
+**0.1.2** includes a browser review app and a Node CLI built on the same bounded streaming analysis core. Compare two `.tgz` files, trace payload growth to individual files, inspect manifest changes and missing literal targets, and export a deterministic JSON report.
 
 ## See a release review
 
-Open [the public app](https://lingikaushikreddy.github.io/release-lens/) and choose **Explore an example**, or drop your own before and after `.tgz` files into the workbench. Swap the archives to reverse the comparison, and choose a 1 MiB or 10 MiB growth budget with one click.
+Open [the public app](https://lingikaushikreddy.github.io/release-lens/) and choose **Explore an example**, or drop your own before and after `.tgz` files into the workbench. The tarball x-ray previews the oversized example and its clean follow-up; **Review this example** analyzes the selected archive pair. The preview is labeled synthetic and stays separate from any report you have already computed. Swap archives to reverse the comparison, and choose a 1 MiB or 10 MiB growth budget with one click.
 
-![Release Lens bright workbench with an interactive archive comparison and example shortcut](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/workbench-home.jpg)
+![Release Lens bright workbench with an interactive archive comparison and example shortcut](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/v012-home.jpg)
 
 The synthetic example adds two fixture files totaling **18 MiB**, plus 4 manifest bytes: **+18,874,372 B** of unpacked payload. Its `/bin/demo` changes to `dist/missing.js`, which is absent from the after archive. Select a category to drill into its files, combine change filters with path search, sort by growth or size, and expand a row for exact bytes and SHA-256 evidence. Filters change the view; exported JSON retains the complete report.
 
-![Interactive evidence review showing selected fixture files, change filters, exact byte deltas and SHA-256 hashes](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/workbench-evidence.jpg)
+![Interactive evidence review showing selected fixture files, change filters, exact byte deltas and SHA-256 hashes](https://raw.githubusercontent.com/Lingikaushikreddy/release-lens/main/docs/images/v012-evidence.jpg)
 
 Choose **Compare clean follow-up** to compare the problematic release with its correction. It removes the fixture files, restores the literal bin target, and reports **−18,874,372 B** with **0 missing local targets in the after archive**. Wildcard targets remain explicitly unchecked.
 
@@ -25,15 +25,17 @@ See the [clean follow-up](docs/images/workbench-clean.jpg), [review overview](do
 Requires Node 22.13+ or Node 24. Run the versioned scoped package directly:
 
 ```sh
-npx --yes @kaushikgojo/release-lens@0.1.1 diff before.tgz after.tgz --format json
+npx --yes @kaushikgojo/release-lens@0.1.2 diff before.tgz after.tgz --format json
 ```
 
-For **0.1.1**, real registry npx and clean npm installation passed on **Windows, Linux and macOS with Node 22/24**, including a [complete release rerun](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38990498134/attempts/2). That rerun skipped npm publication after matching the existing archive's exact bytes. Historical **0.1.0** installation results remain in [the npm release report](evidence/NPM_RELEASE.md).
+For **0.1.2**, the [versioned release report](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.2/RELEASE_REPORT.md) records the six clean npx/npm installation cases, exact archive hash and verified provenance. Download the [raw verification bundle](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.2/release-lens-0.1.2-verification.zip) for individual receipts.
+
+For the earlier **0.1.1**, real registry npx and clean npm installation passed on **Windows, Linux and macOS with Node 22/24**, including a [complete release rerun](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38990498134/attempts/2). That rerun skipped npm publication after matching the existing archive's exact bytes. Historical **0.1.0** installation results remain in [the npm release report](evidence/NPM_RELEASE.md).
 
 Or install this release globally:
 
 ```sh
-npm install --global @kaushikgojo/release-lens@0.1.1
+npm install --global @kaushikgojo/release-lens@0.1.2
 releaselens diff before.tgz after.tgz --format json
 ```
 
@@ -56,6 +58,7 @@ Failure and rerun paths are exercised too: the full **0.1.1** rerun passed all n
 
 | Evidence | What it records |
 | --- | --- |
+| [0.1.2 automated release report](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.2/RELEASE_REPORT.md) | Exact source/main-CI/release-run links, Windows/Linux/macOS Node 22/24 registry results, archive identity and source-bound provenance. [Raw receipts and attestations](https://github.com/Lingikaushikreddy/release-lens/releases/download/v0.1.2/release-lens-0.1.2-verification.zip). |
 | [Release safety report](evidence/RELEASE_SAFETY.md) | Live existing-version skip, expected integrity failure and successful recovery, plus 60 local release checks on each supported Node version. |
 | [0.1.1 release rerun, attempt 2](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38990498134/attempts/2) | All nine jobs passed; npm publish skipped; all six fresh Windows/Linux/macOS Node 22/24 registry cases passed again. |
 | [Failure and recovery rehearsal](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38991624156) | Attempt 1 rejected a deliberately corrupted local expectation; attempt 2 reused the original artifact and passed real anonymous npx/npm installation. |
@@ -67,7 +70,7 @@ Failure and rerun paths are exercised too: the full **0.1.1** rerun passed all n
 | [Public release verification](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/PUBLIC_RELEASE.md) | Hosted release process, required checks, evidence boundaries, and outstanding maintainer pilots. |
 | [Measurement contract](https://github.com/Lingikaushikreddy/release-lens/blob/main/docs/measurement-contract.md) | Exact report semantics and limits of each measurement and finding. |
 
-The GitHub release bundle and CI run above record the original public 0.1.0 artifacts. The npm release report records the later scoped npm publication and its distribution checks.
+The 0.1.0 bundle and its hosted CI run record the original public artifacts. The npm release report records the later scoped npm publication and its distribution checks.
 
 The independent oracle checks paths, payload lengths, hashes, whole archive lengths, deltas, and repeated JSON output without extracting to disk. It checks valid supported inputs; it does not define acceptance policy for malformed archives. Real fixture identities and original registry URLs are in [the corpus records](https://github.com/Lingikaushikreddy/release-lens/blob/main/fixtures/real/records.json). The earlier macOS candidate observations remain in [the historical report](https://github.com/Lingikaushikreddy/release-lens/blob/main/evidence/RELEASE.md).
 

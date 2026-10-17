@@ -212,3 +212,23 @@ test('category and change filters compose and can be cleared', async ({ page }) 
   expect(report.unpackedDelta).toBe(18_874_372);
   expect(report.fileDeltas.some((file: { path: string }) => file.path === 'fixtures/training-a.bin')).toBe(true);
 });
+
+test('x-ray preview preserves a review until its selected example is analyzed', async ({ page }) => {
+  await page.goto(basePath);
+  const preview = page.getByRole('region', { name: 'Release example preview' });
+  await expect(preview).toContainText('Synthetic example');
+  await expect(preview.getByRole('button', { name: 'Added fixtures', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Explore an example', exact: true }).click();
+  await expect(page.locator('.primary-measurement .exact-value')).toHaveText('+18,874,372 B');
+  await preview.getByRole('button', { name: 'Clean follow-up preview', exact: true }).click();
+  await expect(preview.getByRole('button', { name: 'Clean follow-up preview', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.primary-measurement .exact-value')).toHaveText('+18,874,372 B');
+  await preview.getByRole('button', { name: 'Review this example', exact: true }).click();
+  await expect(page.locator('.primary-measurement .exact-value')).toHaveText('−18,874,372 B');
+  await expect(page.getByText('No missing local targets in the after archive.')).toBeVisible();
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download JSON' }).click();
+  const report = JSON.parse(await readFile((await (await downloadEvent).path())!, 'utf8'));
+  expect(report.unpackedDelta).toBe(-18_874_372);
+  expect(report.findings.filter((finding: { side: string; code: string }) => finding.side === 'after' && finding.code === 'MISSING_LITERAL_TARGET')).toHaveLength(0);
+});
