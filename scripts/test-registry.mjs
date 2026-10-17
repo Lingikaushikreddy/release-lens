@@ -18,6 +18,8 @@ const expectedArtifactSha256 = hash(await readFile(process.env.RELEASE_LENS_REGI
 // node_modules lock keys rather than paths relative to the /var alias.
 const temporary = await mkdtemp(join(await realpath(tmpdir()), 'release-lens-registry-'));
 const privatePrefix = join(temporary, 'npm-prefix');
+const userConfig = join(temporary, 'user.npmrc');
+const globalConfig = join(temporary, 'global.npmrc');
 const npmDirectory = join(dirname(process.execPath), 'node_modules/npm/bin');
 const command = (name) => process.platform === 'win32' ? process.execPath : name;
 const commandPrefix = (name) => process.platform === 'win32' ? [join(npmDirectory, `${name}-cli.js`)] : [];
@@ -27,7 +29,7 @@ const inheritedPath = (process.env.PATH ?? '').split(delimiter).filter((entry) =
   return path !== resolve(root) && !path.startsWith(resolve(root) + (process.platform === 'win32' ? '\\' : '/'));
 });
 const environment = {
-  ...process.env,
+  ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^npm_config_/iu.test(key) && !/^(npm_token|node_auth_token)$/iu.test(key))),
   PATH: [dirname(process.execPath), ...inheritedPath].join(delimiter),
   npm_config_audit: 'false',
   npm_config_fund: 'false',
@@ -37,6 +39,10 @@ const environment = {
   NPM_CONFIG_PREFIX: privatePrefix,
   npm_config_global: 'false',
   NPM_CONFIG_GLOBAL: 'false',
+  npm_config_userconfig: userConfig,
+  NPM_CONFIG_USERCONFIG: userConfig,
+  npm_config_globalconfig: globalConfig,
+  NPM_CONFIG_GLOBALCONFIG: globalConfig,
 };
 
 function execute(binary, args, cwd, status = 0) {
@@ -56,6 +62,8 @@ try {
   const npxCache = join(temporary, 'npx-cache');
   const installCache = join(temporary, 'install-cache');
   for (const directory of [npxConsumer, installConsumer, npxCache, installCache, privatePrefix]) await mkdir(directory);
+  await writeFile(userConfig, '');
+  await writeFile(globalConfig, '');
   assert.deepEqual(await readdir(npxConsumer), []);
   assert.deepEqual(await readdir(npxCache), []);
   assert.deepEqual(await readdir(installCache), []);
@@ -85,6 +93,11 @@ try {
   const npxVersion = execute(command('npx'), [...commandPrefix('npx'), '--version'], npxConsumer).stdout.trim();
   const configuredPrefix = execute(command('npm'), [...commandPrefix('npm'), 'prefix', '--global'], npxConsumer).stdout.trim();
   assert.equal(resolve(configuredPrefix), resolve(privatePrefix), 'Global fallback must be isolated to the new empty prefix');
+  for (const [setting, expected] of [['userconfig', userConfig], ['globalconfig', globalConfig]]) {
+    const configured = execute(command('npm'), [...commandPrefix('npm'), 'config', 'get', setting], npxConsumer).stdout.trim();
+    assert.equal(resolve(configured), resolve(expected), `${setting} must use the isolated empty file`);
+    assert.equal(await readFile(expected, 'utf8'), '');
+  }
   const installedRuntime = execute('node', ['--version'], npxConsumer).stdout.trim();
   assert.equal(installedRuntime, process.version, 'npx and installed bins must use the runtime under test');
   const npxOptions = [...commandPrefix('npx'), '--yes', '--ignore-scripts', '--cache', npxCache, '--registry', registry, specification];
@@ -126,8 +139,10 @@ try {
   assert.equal(locked.integrity, metadata.dist.integrity);
   const installedBinary = join(installConsumer, 'node_modules/.bin', process.platform === 'win32' ? 'releaselens.cmd' : 'releaselens');
   await readFile(installedBinary);
-  const cliCommand = process.platform === 'win32' ? process.execPath : installedBinary;
-  const cliPrefix = process.platform === 'win32' ? [join(installed, manifest.bin.releaselens)] : [];
+  // npm exec invokes the installed Windows .cmd shim without hand-written
+  // shell quoting. Offline/no prevent any registry or installation fallback.
+  const cliCommand = process.platform === 'win32' ? command('npm') : installedBinary;
+  const cliPrefix = process.platform === 'win32' ? [...commandPrefix('npm'), 'exec', '--offline', '--no', '--ignore-scripts', '--cache', installCache, '--registry', registry, '--', 'releaselens'] : [];
   const runInstalled = (args, status = 0) => execute(cliCommand, [...cliPrefix, ...args], installConsumer, status);
   assert(runInstalled(['--help']).stdout.includes('releaselens diff'));
 
@@ -158,6 +173,8 @@ try {
   assert.equal(runInstalled(growthArgs).stdout, installedResult.stdout, 'Reports must be deterministic');
   assert.equal(JSON.parse(runInstalled([...growthArgs, '--max-unpacked-growth', '18874372']).stdout).budget, 'pass');
   assert.equal(JSON.parse(runInstalled([...growthArgs, '--max-unpacked-growth', '18874371'], 1).stdout).budget, 'fail');
+  assert.equal(JSON.parse(runNpx([...growthArgs, '--max-unpacked-growth', '18874372']).stdout).budget, 'pass');
+  assert.equal(JSON.parse(runNpx([...growthArgs, '--max-unpacked-growth', '18874371'], 1).stdout).budget, 'fail');
   const cleanupArgs = ['diff', after, clean, '--format', 'json'];
   const cleanupResult = runInstalled(cleanupArgs);
   assert.equal(JSON.parse(cleanupResult.stdout).unpackedDelta, -18_874_372);
@@ -165,6 +182,9 @@ try {
   const rejected = runInstalled(['diff', before, invalid, '--format', 'json'], 2);
   assert.equal(rejected.stdout, '');
   assert(rejected.stderr.startsWith('releaselens:'));
+  const npxRejected = runNpx(['diff', before, invalid, '--format', 'json'], 2);
+  assert.equal(npxRejected.stdout, '');
+  assert(npxRejected.stderr.startsWith('releaselens:'));
 
   const output = join(installConsumer, 'report.json');
   await writeFile(output, 'previous report\n');
@@ -179,6 +199,14 @@ try {
   await mkdir(directoryTarget);
   assert.equal(runInstalled([...growthArgs, '--out', directoryTarget], 3).stdout, '');
   assert(!(await readdir(installConsumer)).some((name) => name.endsWith('.tmp')), 'Atomic output must leave no temporary files');
+  const npxOutput = join(npxConsumer, 'report.json');
+  const npxSaved = runNpx([...growthArgs, '--out', npxOutput]);
+  assert.equal(npxSaved.stdout, '');
+  assert.equal(await readFile(npxOutput, 'utf8'), installedResult.stdout);
+  const npxFailedOutput = runNpx(['diff', before, invalid, '--format', 'json', '--out', npxOutput], 2);
+  assert.equal(npxFailedOutput.stdout, '');
+  assert.equal(await readFile(npxOutput, 'utf8'), installedResult.stdout);
+  assert(!(await readdir(npxConsumer)).some((name) => name.endsWith('.tmp')));
   assert.deepEqual(await Promise.all([before, after, clean].map(async (path) => hash(await readFile(path)))), inputHashes, 'Archive inputs must remain unchanged');
 
   const receipt = {
@@ -196,9 +224,18 @@ try {
     npm: npmVersion,
     npx: npxVersion,
     platform: process.platform,
+    architecture: process.arch,
+    runner: process.env.GITHUB_ACTIONS === 'true' ? {
+      os: process.env.RUNNER_OS,
+      architecture: process.env.RUNNER_ARCH,
+      image: process.env.ImageOS,
+      imageVersion: process.env.ImageVersion,
+    } : null,
+    installedExecution: process.platform === 'win32' ? 'local npm exec --offline --no through installed .cmd shim' : 'direct installed bin',
     freshEmptyWorkingDirectories: true,
     independentFreshCaches: true,
     freshPrivateGlobalPrefix: true,
+    anonymousNpmConfiguration: true,
     installedWithScriptsDisabled: true,
     runtimeDependencies: 0,
     checks: {
@@ -210,6 +247,10 @@ try {
       npxExecutableInferenceAndHelp: true,
       installedExecutableHelp: true,
       npxAndInstalledReportsMatch: true,
+      npxInclusiveBudgetPassExit: 0,
+      npxExceededBudgetExit: 1,
+      npxMalformedArchiveExit: 2,
+      npxAtomicOutputAndFailurePreservation: true,
       independentGrowthBytes: 18_874_372,
       independentCleanupBytes: -18_874_372,
       deterministicJSON: true,
