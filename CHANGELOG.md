@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-10-16
+
+- Tag-triggered GitHub Actions releases with npm trusted publishing and provenance.
+- Fresh anonymous npx and npm installs on Windows, Linux and macOS with Node 22 and 24 after every automated publish.
+- Exact tested-tarball preservation, bounded registry propagation checks and downloadable release evidence.
+- CLI analysis behavior and schema version 1 are unchanged.
+
 ## 0.1.0 — 2026-10-16
 
 - Local browser and CLI comparison of bounded npm gzip/USTAR/PAX artifacts.

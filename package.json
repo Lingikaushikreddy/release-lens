@@ -1,6 +1,6 @@
 {
   "name": "release-lens-workspace",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.25.0",
@@ -17,7 +17,8 @@
     "fixtures": "python3 scripts/make-fixtures.py",
     "test:oracle": "python3 scripts/verify-oracle.py",
     "test:pack": "node scripts/test-pack.mjs",
-    "test:registry": "node scripts/test-registry.mjs"
+    "test:registry": "node scripts/test-registry.mjs",
+    "test:release": "node --test scripts/release-control.test.mjs scripts/registry-fetch.test.mjs"
   },
   "dependencies": {
     "modern-tar": "0.8.6",

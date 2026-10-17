@@ -1,0 +1,186 @@
+name: Publish and verify Release Lens
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-release-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  candidate:
+    name: Gate and preserve tested candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      version: ${{ steps.gate.outputs.version }}
+      tag: ${{ steps.gate.outputs.tag }}
+      dry-run: ${{ steps.gate.outputs.dryRun }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - name: Require matching versions, main ancestry and all 12 exact-commit CI jobs
+        id: gate
+        run: node scripts/release-control.mjs preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm test
+      - run: pnpm test:release
+      - run: pnpm build
+      - run: pnpm test:oracle
+      - run: node scripts/verify-effects.mjs
+      - run: pnpm test:pack
+        env:
+          RELEASE_LENS_PACK_DESTINATION: work/release-cli.tgz
+      - name: Preserve the exact installed-and-tested archive
+        run: |
+          python3 scripts/package-candidate.py --cli-artifact work/release-cli.tgz --output work/candidate
+          node scripts/release-control.mjs candidate
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: tested-release-candidate
+          retention-days: 90
+          path: |
+            work/candidate/*.tgz
+            work/candidate/*.tar.gz
+            work/candidate/*.zip
+            work/candidate/*.json
+            work/candidate/SHA256SUMS
+            work/candidate/evidence/pack.json
+            work/candidate/evidence/oracle.json
+            work/candidate/evidence/effects.json
+          if-no-files-found: error
+
+  publish:
+    name: Publish exact archive with npm trusted identity
+    needs: candidate
+    if: needs.candidate.outputs.dry-run == 'false' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: tested-release-candidate
+          path: work/candidate
+      - name: Validate candidate identity and detect safe reruns
+        id: publication
+        run: node scripts/release-control.mjs publication
+      - name: Publish with OIDC and provenance, without an npm token
+        if: steps.publication.outputs.exists == 'false'
+        run: |
+          touch "$RUNNER_TEMP/empty-npmrc"
+          npm publish "work/candidate/releaselens-${RELEASE_VERSION}.tgz" --registry=https://registry.npmjs.org/ --access public --ignore-scripts --provenance --userconfig="$RUNNER_TEMP/empty-npmrc"
+        env:
+          RELEASE_VERSION: ${{ needs.candidate.outputs.version }}
+          NODE_AUTH_TOKEN: ''
+          NPM_TOKEN: ''
+
+  registry:
+    name: Fresh npx Node ${{ matrix.node }} / ${{ matrix.os }}
+    needs: [candidate, publish]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    env:
+      RELEASE_LENS_REGISTRY_PACKAGE: '@kaushikgojo/release-lens'
+      RELEASE_LENS_REGISTRY_VERSION: ${{ needs.candidate.outputs.version }}
+      RELEASE_LENS_REGISTRY_ARTIFACT: work/candidate/releaselens-${{ needs.candidate.outputs.version }}.tgz
+      RELEASE_LENS_REGISTRY_REPORT: work/registry/registry-node${{ matrix.node }}-${{ matrix.os }}.json
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: tested-release-candidate
+          path: work/candidate
+      - name: Anonymous npx and independent clean npm installation
+        run: node scripts/test-registry.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: published-registry-node${{ matrix.node }}-${{ matrix.os }}
+          retention-days: 90
+          path: ${{ env.RELEASE_LENS_REGISTRY_REPORT }}
+          if-no-files-found: warn
+
+  release:
+    name: Verify provenance and finalize GitHub release
+    needs: [candidate, publish, registry]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: tested-release-candidate
+          path: work/candidate
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: published-registry-*
+          merge-multiple: true
+          path: work/candidate/registry
+      - name: Independently verify registry signatures and source-bound provenance
+        run: node scripts/release-control.mjs provenance
+      - name: Require all six receipts and an unchanged remote tag
+        run: node scripts/release-control.mjs finalize
+      - name: Publish the verified release and evidence
+        run: node scripts/publish-github-release.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: final-release-evidence
+          retention-days: 90
+          path: work/candidate/
+          if-no-files-found: error

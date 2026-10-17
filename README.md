@@ -48,6 +48,8 @@ releaselens diff before.tgz after.tgz --format json \
 
 ## Reports and verification
 
+Releases are automated through [GitHub Actions](https://github.com/Lingikaushikreddy/release-lens/blob/main/.github/workflows/release.yml): matching version tags require the exact commit's full CI matrix, publish the tested tarball through npm trusted publishing, and run fresh npx/npm installs on Windows, Linux and macOS with Node 22/24. GitHub releases are finalized after all six cases and source-bound provenance verification pass. See [the release runbook](https://github.com/Lingikaushikreddy/release-lens/blob/main/docs/releasing.md) for tags, manual candidate rehearsals and failure recovery.
+
 | Evidence | What it records |
 | --- | --- |
 | [Cross-platform registry run 38988622040](https://github.com/Lingikaushikreddy/release-lens/actions/runs/38988622040) | Six successful real npx and clean npm installation cases: Node 22/24 on Windows, Linux and macOS, using anonymous registry access and fresh caches. |

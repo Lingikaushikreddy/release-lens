@@ -5,10 +5,11 @@ import { copyFile, mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile } 
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRegistryFetcher } from './registry-fetch.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const packageName = process.env.RELEASE_LENS_REGISTRY_PACKAGE ?? '@kaushikgojo/release-lens';
-const version = process.env.RELEASE_LENS_REGISTRY_VERSION ?? '0.1.0';
+const version = process.env.RELEASE_LENS_REGISTRY_VERSION ?? JSON.parse(await readFile(join(root, 'packages/cli/package.json'), 'utf8')).version;
 const specification = `${packageName}@${version}`;
 const registry = 'https://registry.npmjs.org';
 assert(process.env.RELEASE_LENS_REGISTRY_ARTIFACT, 'RELEASE_LENS_REGISTRY_ARTIFACT must identify the exact reviewed CI artifact');
@@ -69,9 +70,11 @@ try {
   assert.deepEqual(await readdir(installCache), []);
   assert.deepEqual(await readdir(privatePrefix), []);
 
-  const metadataResponse = await fetch(`${registry}/${encodeURIComponent(packageName)}/${encodeURIComponent(version)}`, { cache: 'no-store' });
-  assert.equal(metadataResponse.status, 200, 'Exact package version must be publicly available from npm');
-  const metadata = await metadataResponse.json();
+  const registryFetcher = createRegistryFetcher({
+    timeoutMs: Number(process.env.RELEASE_LENS_REGISTRY_TIMEOUT_MS ?? 600_000),
+    onRetry: ({ attempt, delayMs, reason }) => console.error(`Waiting for public npm propagation after attempt ${attempt}: ${reason}; retry in ${delayMs}ms.`),
+  });
+  const metadata = await registryFetcher.json(`${registry}/${encodeURIComponent(packageName)}/${encodeURIComponent(version)}`);
   assert.equal(metadata.name, packageName);
   assert.equal(metadata.version, version);
   assert.deepEqual(metadata.bin, { releaselens: 'dist/main.js' });
@@ -80,14 +83,18 @@ try {
   assert.equal(metadata.engines.node, '>=22');
   const tarballURL = new URL(metadata.dist.tarball);
   assert.equal(tarballURL.origin, registry, 'Only fetch the public npm registry tarball');
-  const tarballResponse = await fetch(tarballURL, { cache: 'no-store' });
-  assert.equal(tarballResponse.status, 200);
-  const tarball = Buffer.from(await tarballResponse.arrayBuffer());
+  const tarball = await registryFetcher.bytes(tarballURL);
   const integrity = `sha512-${hash(tarball, 'sha512', 'base64')}`;
   assert(metadata.dist.integrity.split(/\s+/u).includes(integrity), 'Downloaded tarball must match npm SHA-512 integrity');
   if (metadata.dist.shasum) assert.equal(hash(tarball, 'sha1'), metadata.dist.shasum);
   const sha256 = hash(tarball);
   assert.equal(sha256, expectedArtifactSha256, 'Registry bytes must match the exact reviewed publish artifact');
+  // npm/npx resolve an exact version from the installation packument, whose
+  // cache may lag behind both the exact-version URL and available tarball.
+  const packumentURL = `${registry}/${encodeURIComponent(packageName)}`;
+  await registryFetcher.packument(packumentURL, metadata);
+  await registryFetcher.packument(packumentURL, metadata, { accept: 'application/json' });
+  const registryPropagation = registryFetcher.receipt();
 
   const npmVersion = execute(command('npm'), [...commandPrefix('npm'), '--version'], npxConsumer).stdout.trim();
   const npxVersion = execute(command('npx'), [...commandPrefix('npx'), '--version'], npxConsumer).stdout.trim();
@@ -218,6 +225,7 @@ try {
     version,
     verifiedAt: new Date().toISOString(),
     registry,
+    registryPropagation,
     tarball: tarballURL.href,
     sha256,
     integrity,
@@ -244,6 +252,7 @@ try {
     runtimeDependencies: 0,
     checks: {
       publicMetadataAndTarballIntegrity: true,
+      publicInstallPackumentsMatchExactVersion: true,
       reviewedCIArtifactMatchesRegistryBytes: true,
       npxCacheInstallationMatchesRegistry: true,
       globalFallbackExcluded: true,

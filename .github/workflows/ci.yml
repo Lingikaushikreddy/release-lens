@@ -28,6 +28,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm test
+      - run: pnpm test:release
       - run: pnpm test:pack
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
@@ -135,7 +136,7 @@ jobs:
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
 
   release-assets:
-    name: Package verified 0.1.0 artifacts
+    name: Package verified release artifacts
     needs: [cli, browser, oracle, pages-deploy]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -158,17 +159,17 @@ jobs:
       - run: node scripts/verify-effects.mjs
       - run: pnpm test:pack
         env:
-          RELEASE_LENS_PACK_DESTINATION: work/releaselens-0.1.0.tgz
+          RELEASE_LENS_PACK_DESTINATION: work/release-cli.tgz
       - name: Assemble verified release files
-        run: python3 scripts/package-candidate.py --cli-artifact work/releaselens-0.1.0.tgz --output work/release-lens-0.1.0
+        run: python3 scripts/package-candidate.py --cli-artifact work/release-cli.tgz --output work/candidate
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: release-lens-0.1.0-${{ github.sha }}
+          name: release-lens-${{ github.sha }}
           retention-days: 7
           path: |
-            work/release-lens-0.1.0/releaselens-0.1.0.tgz
-            work/release-lens-0.1.0/release-lens-0.1.0-source.tar.gz
-            work/release-lens-0.1.0/release-lens-0.1.0-web.zip
-            work/release-lens-0.1.0/SHA256SUMS
-            work/release-lens-0.1.0/release.json
+            work/candidate/*.tgz
+            work/candidate/*.tar.gz
+            work/candidate/*.zip
+            work/candidate/SHA256SUMS
+            work/candidate/release.json
           if-no-files-found: error

@@ -24,22 +24,23 @@ jobs:
       - run: pnpm test
       - run: pnpm build
       - run: pnpm test:pack
+        env:
+          RELEASE_LENS_PACK_DESTINATION: work/release-cli.tgz
       - run: node scripts/verify-effects.mjs
       - run: pnpm test:oracle
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm test:e2e
-      - name: Pack candidate without lifecycle scripts
-        run: |
-          mkdir -p candidate
-          npm pack ./packages/cli --ignore-scripts --pack-destination candidate
-          cp -R dist candidate/site
-          cp -R evidence candidate/evidence
-          cp README.md LICENSE THIRD_PARTY_NOTICES.md docs/measurement-contract.md candidate/
-          cd candidate
-          sha256sum ./*.tgz > SHA256SUMS
+      - name: Assemble candidate from the tested CLI tarball
+        run: python3 scripts/package-candidate.py --cli-artifact work/release-cli.tgz --output work/candidate
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-lens-candidate-${{ github.sha }}
           retention-days: 7
-          path: candidate/
+          path: |
+            work/candidate/*.tgz
+            work/candidate/*-source.tar.gz
+            work/candidate/*-web.zip
+            work/candidate/evidence/
+            work/candidate/SHA256SUMS
+            work/candidate/release.json
           if-no-files-found: error
